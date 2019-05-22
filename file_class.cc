@@ -41,7 +41,7 @@ namespace FractalSpace
   {
     FileFractal.flush();
     FileEnergy.flush();
-    cerr.flush();
+    DUMPS.flush();
     fflush(PFFractalMemory);
     fflush(PFTime);
     fflush(PFPos);

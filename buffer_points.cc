@@ -15,7 +15,7 @@ namespace FractalSpace
 	for(auto &p : group.p_list_really_high)
 	  {
 	    Point* p_point=p;
-	    for(int p=0;p < padd;p++)
+	    for(int pa=0;pa < padd;pa++)
 	      for(int ni=0;ni<3;ni++)
 		p_point=p_point->get_point_ud_0(ni*2,0);
 	    Point* p_point_z=p_point;
@@ -27,7 +27,7 @@ namespace FractalSpace
 		    Point* p_point_x=p_point_y; 
 		    for(int pad_x=-padd;pad_x <= padd;++pad_x)
 		      {
-			p_point_x->set_it_is_high(true);
+			p_point_x->set_it_is_high(p_point_x->cube_test());
 			if(pad_x < padd)
 			  p_point_x=p_point_x->get_point_up_x_0(); 
 		      }

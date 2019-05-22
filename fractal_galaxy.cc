@@ -97,6 +97,7 @@ int main(int argc, char* argv[])
   bool Debug=true;
   int GridLength=GRL;
   int LevelMax=10;
+  //LevelMax=0; //////////////////////
   int MinimumNumber=8;
   int MaxHypreIterations=20;
   double HypreTolerance=1.0e-7;

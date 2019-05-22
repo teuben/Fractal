@@ -11,11 +11,9 @@ namespace FractalSpace
     timing[0]=-mem.p_mess->Clock();
     ofstream& FF=frac.p_file->DUMPS;
     //
-
     frac.set_number_particles(frac.particle_list.size());
     frac.particle_list_world=frac.particle_list;
     frac.set_number_particles_world(frac.get_number_particles());
-
     //
     if(frac.get_periodic())
       {
@@ -32,8 +30,6 @@ namespace FractalSpace
     vector <double> RealPBox(6);
     for(int particle=0; particle < frac.get_number_particles(); ++particle)
       frac.particle_list[particle]->set_world(FractalRank,particle);
-    // frac.particle_list_world=frac.particle_list;
-    // frac.set_number_particles_world(frac.get_number_particles());
     FF << "BIGBOX " << mem.BigBox[0] << " " << mem.BigBox[1] << " " << mem.BigBox[2] << " " << mem.BigBox[3] << " " << mem.BigBox[4] << " " << mem.BigBox[5] << "\n";
     int FNodesXY=FractalNodes0*FractalNodes1;
     vector <int> lowerZ(FractalNodes2);
@@ -65,7 +61,6 @@ namespace FractalSpace
 	DB=2.0/static_cast<double>(mem.grid_length);
 	DBI=2;
       }
-    // frac.particle_list.clear();
     clean_deque(frac.particle_list);
     int field_length=4;
     if(mem.calc_density_particle)
@@ -78,6 +73,9 @@ namespace FractalSpace
     int integers=1;
     int doubles=4;
     clean_deque(mem.p_mess->parts_tmp);
+    const int total_parts_w=frac.get_number_particles_world();
+    const int total_parts_p=frac.pseudo_particle_list.size();
+    const int total_parts_wp=total_parts_w+total_parts_p;
     int LOOPS=3;
     for(int LOOP=0;LOOP<LOOPS;LOOP++)
       {
@@ -87,11 +85,15 @@ namespace FractalSpace
 	vector <int> counts_in;
 	vector <double> dataR_in;
 	vector <int> dataI_in;
-	for(int particle=0; particle < frac.get_number_particles_world(); ++particle)
+	for(int particle=0; particle < total_parts_wp; ++particle)
 	  {
 	    if(particle % LOOPS == LOOP)
 	      {
-		Particle* P=frac.particle_list_world[particle];
+		Particle* P=0;
+		if(particle < total_parts_w)
+		  P=frac.particle_list_world[particle];
+		else
+		  P=frac.pseudo_particle_list[particle-total_parts_w];
 		P->get_pos(pos);
 		if(!(mem.periodic || vector_in_box(pos,mem.BigBox)))
 		  continue;
@@ -154,7 +156,6 @@ namespace FractalSpace
     timing[1]+=mem.p_mess->Clock();
     timing[2]=-mem.p_mess->Clock();
     frac.set_number_particles(frac.particle_list.size());
-    // mem.TouchWhichBoxes.clear();
     clean_vector(mem.TouchWhichBoxes);
     integers=0;
     how_manyI=-1;
@@ -163,15 +164,15 @@ namespace FractalSpace
       {
 	if(FractalRank == FR)
 	  continue;
-	if(overlap_boxes(mem.Boxes[FractalRank],mem.PBoxes[FR]))
+	if(overlap_boxes(mem.Boxes[FractalRank],mem.PBoxes[FR],mem.grid_length,mem.periodic))
 	  {
 	    mem.TouchWhichBoxes.push_back(FR);
+	    // FF << " TWA"<< overlap_boxes(mem.Boxes[FractalRank],mem.PBoxes[FR]) << " " << mem.steps << " " << FR << "\n";
 	  }
       }
     int TBsize=mem.TouchWhichBoxes.size();
     FF << " IBOX " << mem.RealIBoxes[FractalRank][0] << " " << mem.RealIBoxes[FractalRank][1] << " " << mem.RealIBoxes[FractalRank][2] << " ";
     FF << mem.RealIBoxes[FractalRank][3] << " " << mem.RealIBoxes[FractalRank][4] << " " << mem.RealIBoxes[FractalRank][5] << "\n";
-    // mem.p_mess->parts_tmpp.clear();
     clean_deque(mem.p_mess->parts_tmpp);
     //    LOOPS=1;
     LOOPS=9;

@@ -71,6 +71,7 @@ namespace FractalSpace
 	      {
 		grid[0]=gridx;
 		p_point=&new_points[new_counter];
+		// p_point=new_points++;
 		new_counter++;
 		mem.total_points_used++;
 		Point& point=*p_point;
@@ -130,6 +131,8 @@ namespace FractalSpace
 	p->set_p_highest_level_group(misc.p_group_0);
 	p->set_highest_level(0);
 	p->get_pos(pos);
+	// if(pos[0] < 0.0 || pos[1] < 0.0 || pos[2] < 0.0)
+	//   FileFractal << " TREEA " << pos[0] << " " << pos[1] << " " << pos[2] << " " << p->get_mass() << "\n";
 	//
 	double a_grid_x=pos[0]*a_grid_length;
 	double a_grid_y=pos[1]*a_grid_length;
@@ -160,6 +163,8 @@ namespace FractalSpace
 	    assert(grid >= 0);
 	    Point* p_point=group.list_points[grid];
 	    p_point->list_particles.push_back(p);
+	    // if(pos[0] < 0.0 || pos[1] < 0.0 || pos[2] < 0.0)
+	    //   FileFractal << " TREEB " << pos[0] << " " << pos[1] << " " << pos[2] << " " << p->get_mass() << "\n";
 	    partsin++;
 	  }
 	else
@@ -179,6 +184,19 @@ namespace FractalSpace
       group.set_number_high_groups(0);
     FileFractal << "exit treestart" << "\n";
     t3=fractal.p_mess->Clock();
+    // for(auto p : group.list_points)
+    //   {
+    // 	if(!p->get_inside())
+    // 	  if(!p->get_buffer_point())
+    // 	    if(!p->get_edge_point())
+    // 	      if(!p->get_passive_point())
+    // 		if(!p->get_really_passive())
+    // 		  {
+    // 		    *Point::p_FILE << "ZERO POINT A " << "\n";
+    // 		    p->dump();
+    // 		    assert(0);
+    // 		  }
+    //   }
     FileFractal << "tree time " << t1-t0 << "\t" << t2-t1 << "\t" << t3-t2 << "\n";
     fractal.timing(1,1);
   }

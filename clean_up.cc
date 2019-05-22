@@ -6,7 +6,6 @@ namespace FractalSpace
   void clean_up(Fractal_Memory& mem,Misc& misc)
   {
     ofstream& FileFractal=mem.p_fractal->p_file->DUMPS;
-    //    ofstream& FileFractal=mem.p_fractal->p_file->FileFractal;
     //--------------------------------------------------------------------------------------------------------------------------------
     // Delete all points, groups, chains and misc.
     //--------------------------------------------------------------------------------------------------------------------------------

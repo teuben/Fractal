@@ -13,7 +13,7 @@ namespace FractalSpace
     vector <Point*>ud(6);
     double t0,t1,t2,t3;
     t0=fractal.p_mess->Clock();
-    FileFractal << "enter treestart" << "\n";
+    FileFractal << "enter treestart mini" << "\n";
     int point_counter=0;
     mem.total_points_generated=0;
     mem.total_points_used=0;

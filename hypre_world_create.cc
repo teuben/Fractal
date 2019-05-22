@@ -7,8 +7,8 @@ namespace FractalSpace
 			  vector<vector<Point*>>& SPoints, bool buffer_groups)
   {
     static int _COUNTER=0;
-    // int RANK=-1;
-    // MPI_Comm_rank(Fractal_Memory::FRACTAL_UNIVERSE,&RANK);
+    ofstream& FF=mem.p_file->DUMPS;
+    int width=mem.grid_length*Misc::pow(2,mem.level_max);
     int FractalRank=mem.p_mess->FractalRank;
     int FractalNodes=mem.p_mess->FractalNodes;
     mem.p_mess->IHranks.assign(FractalNodes,-1);
@@ -40,20 +40,24 @@ namespace FractalSpace
       }
     for(int FR : mem.TouchWhichBoxes)
       {
+	FF << " TWH " << mem.steps << " " << level << " " << FR << " ";
+	bool TT(false);
 	if(counts[FR] > 0 && mem.p_mess->IAmAHypreNode)
 	  {
 	    vector <int>TBBox=mem.BBoxesLev[FR][level];
 	    for(vector <int>& SB : SBoxes)
 	      {
-	    	if(!overlap_boxes(SB,TBBox))
-	    	  continue;
-	    	mem.Touchy.push_back(FR);
-	    	break;
+	    	if(overlap_boxes(SB,TBBox,width,mem.periodic))
+		  {
+		    mem.Touchy.push_back(FR);
+		    TT=true;
+		    break;
+		  }
 	      }
 	  }
+	FF << TT << "\n";
       }
     node_groups_struct(mem,counts);
-    // mem.p_mess->freenodes.clear();
     if(mem.hypre_load_balance && !mem.p_mess->freenodes.empty())
       use_freenodes(mem,counts);
     mem.p_mess->HypreGroupCreate(mem.p_mess->Hranks);

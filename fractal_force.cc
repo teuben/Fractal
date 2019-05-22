@@ -1,9 +1,13 @@
 /*
-***  Rasmus Villumsen
+***  Rasmus Villumsen:
 ***   In Honor to the forgotten polar explorer.
+***   He died trying to save Wegener's sorry a..
+
+***  Caltech:
+***   There is no gravity, the Earth sucks.
 
 ***  Mr. Garibaldi to hapless Engineer: 
-***  It is a prototype, it does not have to be perfect,
+***   It is a prototype, it does not have to be perfect,
 ***   it just has to work.
      
 ***  Sheridan to Mr. Garibaldi:
@@ -39,7 +43,7 @@
 ***   Now I run 1000000 particles per node on 100000 nodes. Vulcan@LLNL.
 ***   Eight orders of magnitude.
 ***  On an observing trip in Chile I was interrogated at gun-point, in Spanish, 
-***   about my suspected involvement in an armed bank robbery.
+***   about my suspected involvement in an armed bank robbery with fatalities.
 ***  In Brazil I took a picture of the Danish flag on the building housing the Danish consulate.
 ***   This building also housed Chase Manhattan offices, so I was detained by security for an hour. Shakedown.
 ***  On my honeymoon our delicious meal was interrupted by a shooting in the restaurant.
@@ -47,12 +51,15 @@
 ***   He apologized for the incident, said he was going to the hospital, but asked us to please enjoy our meal.
 ***  I need to find out where I can get a Pan Galactic Gargle Blaster.
 ***  In customs at JFK they became suspicious of me, so I was given an astronomy quiz. I passed.
-***  To my elementary school teacher, Mrs Hansen, a great teacher. Quiet authority.
-***  To my 7th grade teacher, Mr Christensen, a former sailor, who told the best stories, some of them G rated. He made me want to travel the world.
-***  To my high school history teacher, Mr. Frederiksen, who taught me critical thinking. Always question everything.
+***  To my elementary school teacher, Mrs Hansen, a great teacher. Never raised her voice, quiet authority.
+***  To my 7th grade teacher, Mr Christensen, a former sailor, who told the best stories, some of them school appropriate. He made me want to travel the world.
+***  To my high school history teacher, Mr. Frederiksen, who taught me critical thinking. Always question everything. The best question is "WHY?".
 ***  To my high school math teacher, Mr. Mourier, who taught me problem solving skills. Infinite patience.
 ***  TC Villumsen at 13 y.o.:
 ***   Mom, Dad does not do any work, all he does is read magazines, play on the computer and talk with his friends.
+
+***  SPACEX:
+***  Build, launch, learn, repeat.
 
 ***  Nina:
 ***  I am not a kid, I am a highly sophisticated child.
@@ -60,8 +67,7 @@
 
 ***  Mike Owen:
 ***  Our simulations are better than reality..
-***  As soon as you get a program to work 
-***   you should rewrite it from scratch.
+***  As soon as you get a program to work, you should rewrite it from scratch.
 
 ***  Big Bang Theory: Sheldon Cooper:
 ***  I am a Physicist,
@@ -146,6 +152,7 @@ namespace FractalSpace
   {
     Full_Stop(fractal_memory,-1);
     ofstream& FileFractal=fractal.p_file->DUMPS;
+    const int RANK=fractal_memory.p_mess->FractalRank;
     FileFractal << "here in fractal_force " << "\n";
     FileFractal << "number of everything entering fractal "  << " " << Group::number_groups << " " << Point::number_points << "\n";
     FileFractal << " Total number of particles entering Fractal " << Particle::number_particles << "\n";
@@ -155,7 +162,7 @@ namespace FractalSpace
     vector <int> PBoxLength(3);
     fractal.getPBoxLength(PBoxLength);
     int volume=PBoxLength[0]*PBoxLength[1]*PBoxLength[2];
-    FileFractal << " particles after scatter " << fractal_memory.p_mess->FractalRank << " " << fractal.get_number_particles() << " " << volume << "\n";
+    FileFractal << " particles after scatter " << RANK << " " << fractal.get_number_particles() << " " << volume << "\n";
     fractal.timing_lev(1,0);
     int jfield=4;
     if(fractal_memory.calc_density_particle) 
@@ -223,9 +230,11 @@ namespace FractalSpace
 	  {
 	    Group& group=*pgroup;
 	    assert(group.get_number_high_groups() <= 0);
-	    if(group.get_number_high_groups() == 0) continue;
-	    high_points(group,fractal,misc);
-	    if(group.get_number_high_points() == 0) continue;
+	    if(group.get_number_high_groups() == 0)
+	      continue;
+	    high_points(group,fractal_memory,misc);
+	    if(group.get_number_high_points() == 0)
+	      continue;
 	    buffer_points(group,fractal);
 	  }
 	int group_counter=0;
@@ -233,7 +242,8 @@ namespace FractalSpace
 	  {
 	    Group& group=*pgroup;
 	    assert(group.get_number_high_groups() <= 0);
-	    if(group.get_number_high_groups() == 0) continue;
+	    if(group.get_number_high_groups() == 0)
+	      continue;
 	    fractal.timing(-1,11);
 	    high_pairs(group); 
 	    fractal.timing(1,11);
@@ -290,14 +300,20 @@ namespace FractalSpace
 	/*                */	         fractal.timing(-1,20);
 		potential_start(group); 		
 	/*                */	         fractal.timing(1,20);
+		// group.group_dumpp(fractal_memory,0);
 	      }
 	    Full_Stop(fractal_memory,36);
+
+
 	    poisson_solver_struct(fractal,fractal_memory,level);
+
+
 	    for(Group* pgroup : fractal_memory.all_groups[level])
 	      {
 		Group& group=*pgroup;
 		fractal.timing(-1,22);
 		force_at_point(group,fractal); 		   
+		// group.group_dumpp(fractal_memory,1);
 		fractal.timing(1,22);
 		if(fractal_memory.momentum_conserve)
 		  force_sum_particle(group,false);
@@ -338,7 +354,6 @@ namespace FractalSpace
     fractal.timing(1,44);
     fractal.timing(-1,26);
     clean_up(fractal_memory,misc);
-    // clean_up(fractal_memory,misc,fractal_ghost);
     fractal.timing(1,26);
     Full_Stop(fractal_memory,38);
     fractal.timing_lev(-1,0);
@@ -357,7 +372,7 @@ namespace FractalSpace
     FileFractal << " Total number of particles exiting Fractal " << Particle::number_particles << "\n";
     FileFractal << " Made It fractal_force " << fractal_memory.steps << " " << fractal_memory.p_mess->Clock()-fractal_memory.p_mess->WallTime << "\n";
     fractal_memory.p_file->FlushAll();
-    if(fractal_memory.p_mess->FractalRank == 0)
+    if(RANK == 0)
       cerr << " Finished FractalForce " << fractal_memory.steps << "\n";
   }
   void Full_Stop(Fractal_Memory& mem,int number)

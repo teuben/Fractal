@@ -89,7 +89,6 @@ namespace FractalSpace
     static std::string vel;
     Fractal()
     {
-      //      cerr << " made ghost fractal" << "\n";
     }
     template <class M> Fractal(M& mem):
       density_0(0.0),
@@ -97,8 +96,6 @@ namespace FractalSpace
       highest_level_used(0),
       omega_fraction(2.0/3.0)
     {
-      //      cerr << " starting fractal " << "\n";
-      //      clocks_per_sec=static_cast<double>(CLOCKS_PER_SEC);
       clocks_per_sec=1.0;
       steps=0;
       omega_start=mem.omega_start;
@@ -120,7 +117,6 @@ namespace FractalSpace
       debug=mem.debug;
       base_mass=mem.base_mass;
       //
-      //      cerr << " fractal start a " << FractalNodes0 << " " << FractalNodes1 << " " << FractalNodes2 << " " << FractalNodes << "\n";
       p_mess=mem.p_mess;
       p_file=mem.p_file;
       MPIrun=mem.MPIrun;
@@ -128,19 +124,13 @@ namespace FractalSpace
       FractalNodes0=mem.FractalNodes0;
       FractalNodes1=mem.FractalNodes1;
       FractalNodes2=mem.FractalNodes2;
-      //      cerr << " fractal start b " << FractalNodes0 << " " << FractalNodes1 << " " << FractalNodes2 << " " << FractalNodes << "\n";
-      //      cerr << " fractal start c " << p_mess << " " << p_file << "\n";
       FractalRank=get_FractalRank();
-      //      cerr << FractalRank << "\n";
       assert(FractalRank<FractalNodes);
       Box=mem.Boxes[FractalRank];
       BBox=mem.BBoxes[FractalRank];
       PBox=mem.PBoxes[FractalRank];
       PBoxLength=mem.PBoxesLength[FractalRank];
       Buffer=mem.Buffers[FractalRank];
-      //      BoxLev=mem.BoxesLev[FractalRank];
-      //      BBoxLev=mem.BBoxesLev[FractalRank];
-      //      PBoxLev=mem.PBoxesLev[FractalRank];
       BoxLev=mem.FRBoxesLev;
       BBoxLev=mem.FRBBoxesLev;
       PBoxLev=mem.FRPBoxesLev;
@@ -220,11 +210,9 @@ namespace FractalSpace
       masks_square=mem.masks_square;
       rad.assign(101,0.0);
       grow.assign(101,0.0);
-      //      cerr << "Making Fractal " << this << "\n";
     }
     ~Fractal()
     {    
-      //      cerr << "Ending Fractal " << this << "\n";
     }
     void redo(Fractal_Memory* PFM);
     int get_FractalRank() const;
@@ -240,6 +228,7 @@ namespace FractalSpace
     void setBuffer(std::vector <int>& BB);
     void getBox(std::vector <int>& B) const;
     void getBBox(std::vector <int>& BB) const;
+    void getBoxLev(vector <int>& B,const int& level) const;
     void getBBoxLev(std::vector <int>& BB,const int& level) const;
     void getPBoxLev(std::vector <int>& PB,const int& level) const;
     void getPBoxLength(std::vector <int>& PBL) const;

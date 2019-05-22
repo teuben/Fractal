@@ -5,12 +5,11 @@ namespace FractalSpace
 {
   void update_rv(Fractal& fractal,const int& param,const double& const1,const double& const2)
   {
-    ofstream& FileFractal=fractal.p_file->DUMPS;
-    //    ofstream& FileFractal=fractal.p_file->FileFractal;
+    ofstream& FF=fractal.p_file->DUMPS;
     vector <double> pos(3);
     vector <double> vel(3);
     vector <double> force(3);
-    FileFractal << "update " << param << " " << const1 << " " << const2 << "\n";
+    FF << "update " << param << " " << const1 << " " << const2 << "\n";
     if(param == 0)
       {
 	for(int n=0;n<fractal.get_number_particles();++n)

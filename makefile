@@ -447,6 +447,9 @@ potential_start.o :	potential_start.cc $(classes)
 power_spectrum.o :	power_spectrum.cc $(classes)
 	$(compile) -c power_spectrum.cc
 #
+problem_points.o :	problem_points.cc $(classes)
+	$(compile) -c problem_points.cc
+#
 really_clear.o :	really_clear.cc $(classes)
 	$(compile) -c really_clear.cc
 #

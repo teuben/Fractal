@@ -88,9 +88,6 @@ namespace FractalSpace
     template <class T> static void add_dens(std::vector <T>& dens,const T& dm, T& d_x, 
 					    T& d_y, T& d_z)
     {
-      //       assert(abs(d_x-0.5) <= 0.5);
-      //       assert(abs(d_y-0.5) <= 0.5);
-      //       assert(abs(d_z-0.5) <= 0.5);
       if(abs(d_x-0.5) >= 0.5)
 	{
 	  std::cout << "dx error " << abs(d_x-0.5)-0.5 << "\n";
@@ -370,18 +367,6 @@ namespace FractalSpace
 	}
       return;
     }
-    // template <class T> void zero_shrink_std::vector(std::vector <T>& vec,int size)
-    // {
-    //   vec.clear();
-    //   vec.resize(size);
-    //   vec.shrink_to_fit();
-    // }
-    // template <class T> void shrink_std::vectors(std::vector <std::vector <T> >& vec)
-    // {
-    //   vec.shrink_to_fit();
-    //   for(std::vector <T> v : vec)
-    // 	v.shrink_to_fit();
-    // }
     template <class T> struct count_up
     {
       bool operator()(const T A,const T B) const

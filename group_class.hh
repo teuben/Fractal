@@ -124,6 +124,8 @@ namespace FractalSpace
     void get_force_variance(double& varx,double& vary,double& varz);
     void get_miny_maxy(std::vector<int>& miny,std::vector<int>& maxy);
     void set_miny_maxy();
+    void group_dumpp();
+    void group_dumpp(Fractal_Memory& mem,const int tag);
   };
 }
 #endif

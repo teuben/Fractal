@@ -186,6 +186,8 @@ namespace FractalSpace
 	for(int ni=0;ni<6;ni+=2)
 	  {
 	    //	      cerr << " b ni " << b << " " << ni << "\n";
+	    // RealBoxes[b][ni]=static_cast<double>(BBoxes[b][ni])*glinv;
+	    // RealBoxes[b][ni+1]=static_cast<double>(BBoxes[b][ni+1])*glinv;
 	    RealBoxes[b][ni]=static_cast<double>(Boxes[b][ni])*glinv;
 	    RealBoxes[b][ni+1]=static_cast<double>(Boxes[b][ni+1]+1)*glinv;
 	    RealPBoxes[b][ni]=static_cast<double>(PBoxes[b][ni])*glinv;

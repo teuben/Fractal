@@ -74,6 +74,10 @@ namespace FractalSpace
   {
     BB=BBox;
   }
+  void Fractal::getBoxLev(vector <int>& B,const int& level) const
+  {
+    B=BoxLev[level];
+  }
   void Fractal::getBBoxLev(vector <int>& BB,const int& level) const
   {
     BB=BBoxLev[level];
@@ -99,43 +103,72 @@ namespace FractalSpace
     vector <int> pos(3);
     point.get_pos_point(pos);
     edge=false;
-    buff=false;
-    really=false;
+    if(pos[0] == BBoxLev[level][0] || pos[0] == BBoxLev[level][1])
+      edge=(pos[1] >= BBoxLev[level][2] && pos[1] <= BBoxLev[level][3] && pos[2] >= BBoxLev[level][4] && pos[2] <= BBoxLev[level][5]);
+    else if(pos[1] == BBoxLev[level][2] || pos[1] == BBoxLev[level][3])
+      edge=(pos[0] >= BBoxLev[level][0] && pos[0] <= BBoxLev[level][1] && pos[2] >= BBoxLev[level][4] && pos[2] <= BBoxLev[level][5]);
+    else if(pos[2] == BBoxLev[level][4] || pos[2] == BBoxLev[level][5])
+      edge=(pos[0] >= BBoxLev[level][0] && pos[0] <= BBoxLev[level][1] && pos[1] >= BBoxLev[level][2] && pos[1] <= BBoxLev[level][3]);
+    // edge=FractalSpace::on_edge(pos,BBoxLev[level]);
+    // edge= 
+    //   (pos[0]==BBoxLev[level][0] || pos[0] == BBoxLev[level][1]) &&
+    //   (pos[1]==BBoxLev[level][2] || pos[1] == BBoxLev[level][3]) &&
+    //   (pos[2]==BBoxLev[level][4] || pos[2] == BoxLev[level][5]);
+    buff=edge;
     pass=
-      pos[0]< BBoxLev[level][0] ||
-      pos[0]> BBoxLev[level][1] ||
-      pos[1]< BBoxLev[level][2] ||
-      pos[1]> BBoxLev[level][3] ||
-      pos[2]< BBoxLev[level][4] ||
-      pos[2]> BBoxLev[level][5];
-    if(pass)
-      {
-	really=
-	  pos[0]< PBoxLev[level][0] ||
-	  pos[0]> PBoxLev[level][1] ||
-	  pos[1]< PBoxLev[level][2] ||
-	  pos[1]> PBoxLev[level][3] ||
-	  pos[2]< PBoxLev[level][4] ||
-	  pos[2]> PBoxLev[level][5];
-	return;
-      }
-    buff=
-      pos[0] < BoxLev[level][0] ||
-      pos[0] > BoxLev[level][1] ||
-      pos[1] < BoxLev[level][2] ||
-      pos[1] > BoxLev[level][3] ||
-      pos[2] < BoxLev[level][4] ||
-      pos[2] > BoxLev[level][5];
-    if(buff)
-      return;
-    edge=
-      pos[0]== BoxLev[level][0] ||
-      pos[0]== BoxLev[level][1] ||
-      pos[1]== BoxLev[level][2] ||
-      pos[1]== BoxLev[level][3] ||
-      pos[2]== BoxLev[level][4] ||
-      pos[2]== BoxLev[level][5];
+      (pos[0]==PBoxLev[level][0] || pos[0] == PBoxLev[level][1]) &&
+      (pos[1]==PBoxLev[level][2] || pos[1] == PBoxLev[level][3]) &&
+      (pos[2]==PBoxLev[level][4] || pos[2] == PBoxLev[level][5]);
+    really=
+      (pos[0]< PBoxLev[level][0] ||
+       pos[0]> PBoxLev[level][1]) ||
+      (pos[1]< PBoxLev[level][2] ||
+       pos[1]> PBoxLev[level][3]) ||
+      (pos[2]< PBoxLev[level][4] ||
+       pos[2]> PBoxLev[level][5]);
   }
+  // void Fractal::assign_edge_buffer_passive(Point& point,const int& level,bool& edge,bool& buff,bool& pass,bool& really) const
+  // {
+  //   vector <int> pos(3);
+  //   point.get_pos_point(pos);
+  //   edge=false;
+  //   buff=false;
+  //   really=false;
+  //   pass=
+  //     pos[0]< BBoxLev[level][0] ||
+  //     pos[0]> BBoxLev[level][1] ||
+  //     pos[1]< BBoxLev[level][2] ||
+  //     pos[1]> BBoxLev[level][3] ||
+  //     pos[2]< BBoxLev[level][4] ||
+  //     pos[2]> BBoxLev[level][5];
+  //   if(pass)
+  //     {
+  // 	really=
+  // 	  pos[0]< PBoxLev[level][0] ||
+  // 	  pos[0]> PBoxLev[level][1] ||
+  // 	  pos[1]< PBoxLev[level][2] ||
+  // 	  pos[1]> PBoxLev[level][3] ||
+  // 	  pos[2]< PBoxLev[level][4] ||
+  // 	  pos[2]> PBoxLev[level][5];
+  // 	return;
+  //     }
+  //   buff=
+  //     pos[0] < BoxLev[level][0] ||
+  //     pos[0] > BoxLev[level][1] ||
+  //     pos[1] < BoxLev[level][2] ||
+  //     pos[1] > BoxLev[level][3] ||
+  //     pos[2] < BoxLev[level][4] ||
+  //     pos[2] > BoxLev[level][5];
+  //   if(buff)
+  //     return;
+  //   edge=
+  //     pos[0]== BoxLev[level][0] ||
+  //     pos[0]== BoxLev[level][1] ||
+  //     pos[1]== BoxLev[level][2] ||
+  //     pos[1]== BoxLev[level][3] ||
+  //     pos[2]== BoxLev[level][4] ||
+  //     pos[2]== BoxLev[level][5];
+  // }
   void Fractal::setMPIrun(const bool& Mr)
   {
     MPIrun=Mr;
@@ -144,32 +177,52 @@ namespace FractalSpace
   {
     return MPIrun;
   }
-  void Fractal::inside_edge_buffer_pass(vector <int>& n,bool& inside,bool& edge,bool& buff,bool& pass) const
+  void Fractal::inside_edge_buffer_pass(vector <int>& pos,bool& inside,bool& edge,bool& buff,bool& pass) const
   {
-    inside=false;
-    edge=false;
-    buff=false;
-    pass=
-      n[0] < BBox[0] || n[0] > BBox[1] ||
-      n[1] < BBox[2] || n[1] > BBox[3] ||
-      n[2] < BBox[4] || n[2] > BBox[5];
-    //      if(pass)
-    //	return;
-    buff=
-      n[0] < Box[0] || n[0] > Box[1] ||
-      n[1] < Box[2] || n[1] > Box[3] ||
-      n[2] < Box[4] || n[2] > Box[5];
-    //      if(buff)
-    //	return;
-    edge=
-      n[0]==Box[0] || n[0] == Box[1] ||
-      n[1]==Box[2] || n[1] == Box[3] ||
-      n[2]==Box[4] || n[2] == Box[5];
     inside=
-      n[0] > BBox[0] && n[0] < BBox[1] &&
-      n[1] > BBox[2] && n[1] < BBox[3] &&
-      n[2] > BBox[4] && n[2] < BBox[5];
+      (pos[0] > BBox[0] && pos[0] < BBox[1]) &&
+      (pos[1] > BBox[2] && pos[1] < BBox[3]) &&
+      (pos[2] > BBox[4] && pos[2] < BBox[5]);
+    edge=false;
+    if(pos[0] == BBox[0] || pos[0] == BBox[1])
+      edge=(pos[1] >= BBox[2] && pos[1] <= BBox[3] && pos[2] >= BBox[4] && pos[2] <= BBox[5]);
+    else if(pos[1] == BBox[2] || pos[1] == BBox[3])
+      edge=(pos[0] >= BBox[0] && pos[0] <= BBox[1] && pos[2] >= BBox[4] && pos[2] <= BBox[5]);
+    else if(pos[2] == BBox[4] || pos[2] == BBox[5])
+      edge=(pos[0] >= BBox[0] && pos[0] <= BBox[1] && pos[1] >= BBox[2] && pos[1] <= BBox[3]);
+    // edge= 
+    //   (pos[0]== BBox[0] || pos[0] == BBox[1]) &&
+    //   (pos[1]== BBox[2] || pos[1] == BBox[3]) &&
+    //   (pos[2]== BBox[4] || pos[2] == BBox[5]);
+    buff=edge;
+    pass=!inside && !edge && !buff;
   }
+  // void Fractal::inside_edge_buffer_pass(vector <int>& n,bool& inside,bool& edge,bool& buff,bool& pass) const
+  // {
+  //   inside=false;
+  //   edge=false;
+  //   buff=false;
+  //   pass=
+  //     n[0] < BBox[0] || n[0] > BBox[1] ||
+  //     n[1] < BBox[2] || n[1] > BBox[3] ||
+  //     n[2] < BBox[4] || n[2] > BBox[5];
+  //   //      if(pass)
+  //   //	return;
+  //   buff=
+  //     n[0] < Box[0] || n[0] > Box[1] ||
+  //     n[1] < Box[2] || n[1] > Box[3] ||
+  //     n[2] < Box[4] || n[2] > Box[5];
+  //   //      if(buff)
+  //   //	return;
+  //   edge=
+  //     n[0]==BBox[0] || n[0] == BBox[1] ||
+  //     n[1]==BBox[2] || n[1] == BBox[3] ||
+  //     n[2]==BBox[4] || n[2] == BBox[5];
+  //   inside=
+  //     n[0] > BBox[0] && n[0] < BBox[1] &&
+  //     n[1] > BBox[2] && n[1] < BBox[3] &&
+  //     n[2] > BBox[4] && n[2] < BBox[5];
+  // }
   Fractal_Memory* Fractal::get_p_generated_from() const
   {
     return p_generated_from;

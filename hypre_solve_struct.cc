@@ -10,6 +10,7 @@ namespace FractalSpace
     static vector <double> Hypre_sum_time(mem.p_fractal->get_level_max()+1,0.0);
     ofstream& FHT=mem.p_file->DUMPS;
     int spacing=Misc::pow(2,mem.p_fractal->get_level_max()-level);
+    const int WIDTH=mem.periodic ? mem.grid_length*Misc::pow(2,level) : 0;
     int FractalRank=mem.p_mess->FractalRank;
     int HypreRank=mem.p_mess->HypreRank;
     int HypreNodes=mem.p_mess->HypreNodes;
@@ -41,7 +42,7 @@ namespace FractalSpace
     vector <int> VOL(SBoxes.size());
     double time0=mem.p_mess->Clock();
     HYPRE_StructGridCreate(mem.p_mess->HypreWorld,3,&grid);
-    vector <int>pers(3,0);
+    vector <int>pers(3,WIDTH);
     HYPRE_StructGridSetPeriodic(grid,&(*pers.begin()));
     int sumVOL=0;
     int B=0;

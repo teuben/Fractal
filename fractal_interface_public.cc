@@ -158,6 +158,9 @@ namespace FractalSpace
     // Construct a File object. 
     // All output is done in File member functions. 
     // This will be used throughout the simulation.
+    // If you want no output make BaseDirectory="".
+    // Then everything gets written to /dev/null.
+    
     File* p_file=0;
     if(PFM->BaseDirectory == "")
       p_file=new File();

@@ -6,7 +6,6 @@ namespace FractalSpace
   void check_for_edge_trouble(Fractal& fractal)
   { 
     ofstream& FileFractal=fractal.p_file->DUMPS;
-    //    ofstream& FileFractal=fractal.p_file->FileFractal;
     fractal.timing(-1,2);
     //--------------------------------------------------------------------------------------------------------------------------------
     // Round off errors can cause trouble at the edge, move points a little

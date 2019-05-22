@@ -16,7 +16,7 @@ namespace FractalSpace
     for (auto pN : Point::order[corner])
       {
     	black_knight=black_knight->get_point_ud_0(pN,1);
-    	black_knight->set_it_is_high(true);
+    	black_knight->set_it_is_high(black_knight->cube_test());
       }
   }
 }

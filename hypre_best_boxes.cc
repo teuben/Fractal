@@ -28,7 +28,6 @@ namespace FractalSpace
 	    {
 	      for(auto p : SP)
 		{
-		  // nPoints++;
 		  if(p == 0)
 		    nFakes++;
 		}

@@ -15,10 +15,17 @@ namespace FractalSpace
 	    if(rp < 0)
 	      continue;
 	    if(p_point->get_inside())
-	      p_point->diff_pot(conv);
+	      {
+		p_point->diff_pot(conv);
+		// *Point::p_FILE << " CARE A " << " ";
+		// p_point->dumppf();
+	      }
 	    else
-	      p_point->diff_pot_careful(conv);
-	    //	    p_point->dumppf();
+	      {
+		p_point->diff_pot_careful(conv);
+		// *Point::p_FILE << " CARE B " << " ";
+		// p_point->dumppf();
+	      }
 	  }
 	return;
       }

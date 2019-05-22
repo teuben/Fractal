@@ -3,8 +3,11 @@
 #include "headers.hh"
 namespace FractalSpace
 {
-  template <class M, class F>  int split_particle(M& mem,F& frac,const double& x0,const double& y0,const double& z0,
-						  int& count,const double& m,const int& split_to,const bool& gen_part)
+  // template <class M, class F>  int split_particle(M& mem,F& frac,const double& x0,const double& y0,const double& z0,
+  // 						  int& count,const double& m,const int& split_to,const bool& gen_part)
+  int split_particle(Fractal_Memory& mem,Fractal& frac,
+		     const double& x0,const double& y0,const double& z0,
+		     int& count,const double& m,const int& split_to,const bool& gen_part)
   {
     Particle* par=0;
     int iphase=3;
@@ -143,8 +146,8 @@ namespace FractalSpace
     return many;
   }
 }
-namespace FractalSpace
-{
-  template int split_particle(Fractal_Memory& mem,Fractal& frac,const double& x0,const double& y0,const double& z0,int& count,const double& m,const int& split_to,
-const bool& gen_part);
-}
+// namespace FractalSpace
+// {
+//   template int split_particle(Fractal_Memory& mem,Fractal& frac,const double& x0,const double& y0,const double& z0,int& count,const double& m,const int& split_to,
+// const bool& gen_part);
+// }

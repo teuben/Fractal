@@ -209,8 +209,6 @@ namespace FractalSpace
   void Group::group_dumpp(Fractal_Memory& mem,const int tag)
   {
     mem.p_mess->p_file->DUMPS << " MANY " << "\n";
-    vector<int>Box=mem.BoxesLev[mem.p_mess->FractalRank][get_level()];
-    mem.p_mess->p_file->DUMPS << Box[0] << " " << Box[1] << " " << Box[2] << " " << Box[3] << " " << Box[4] << " " << Box[5] << "\n";
     for(Point* p : list_points)
       if(p->get_inside() || p->get_edge_point())
 	{

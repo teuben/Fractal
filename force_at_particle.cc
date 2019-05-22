@@ -45,8 +45,8 @@ namespace FractalSpace
 		    Misc::set_weights(weights,d_x,d_y,d_z);
 		    Misc::sum_prod<double>(0,7,1,sum_pf,weights,pott,f_x,f_y,f_z);
 		    particle.set_field_pf(sum_pf);
-		    if(sum_pf[0]*sum_pf[1]*sum_pf[2]*sum_pf[3] ==0.0)
-		      particle.dump(FileFractal,pott,f_x,f_y,f_z);
+		    // if(sum_pf[0]*sum_pf[1]*sum_pf[2]*sum_pf[3] ==0.0)
+		    //   particle.dump(FileFractal,pott,f_x,f_y,f_z);
 		  }
 	      }
 	    else

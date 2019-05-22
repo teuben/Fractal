@@ -19,19 +19,19 @@ namespace FractalSpace
   void Point::set_mass_points(bool what)
   {
     mass_point=what;
-    Point* p=get_point_ud_0(1);
+    Point* p=get_point_ud_0(1,10);
     p->mass_point=what;
-    p=p->get_point_ud_0(3);
+    p=p->get_point_ud_0(3,10);
     p->mass_point=what;
-    p=p->get_point_ud_0(0);
+    p=p->get_point_ud_0(0,10);
     p->mass_point=what;
-    p=p->get_point_ud_0(5);
+    p=p->get_point_ud_0(5,10);
     p->mass_point=what;
-    p=p->get_point_ud_0(1);
+    p=p->get_point_ud_0(1,10);
     p->mass_point=what;
-    p=p->get_point_ud_0(2);
+    p=p->get_point_ud_0(2,10);
     p->mass_point=what;
-    p=p->get_point_ud_0(0);
+    p=p->get_point_ud_0(0,10);
     p->mass_point=what;
   }
   bool Point::get_mass_point() const
@@ -459,34 +459,34 @@ namespace FractalSpace
     if(drx > 0)
       {
 	for (int dr=0;dr < drx;dr++)
-	  arthur=arthur->get_point_ud_0(1);
+	  arthur=arthur->get_point_ud_0(1,11);
       }
     else if(drx < 0)
       {
 	for (int dr=0;dr < -drx;dr++)
-	  arthur=arthur->get_point_ud_0(0);
+	  arthur=arthur->get_point_ud_0(0,11);
       }
     //
     if(dry > 0)
       {
 	for (int dr=0;dr < dry;dr++)
-	  arthur=arthur->get_point_ud_0(3);
+	  arthur=arthur->get_point_ud_0(3,11);
       }
     else if(dry < 0)
       {
 	for (int dr=0;dr < -dry;dr++)
-	  arthur=arthur->get_point_ud_0(2);
+	  arthur=arthur->get_point_ud_0(2,11);
       }
     //
     if(drz > 0)
       {
 	for (int dr=0;dr < drz;dr++)
-	  arthur=arthur->get_point_ud_0(5);
+	  arthur=arthur->get_point_ud_0(5,11);
       }
     else if(drz < 0)
       {
 	for (int dr=0;dr < -drz;dr++)
-	  arthur=arthur->get_point_ud_0(4);
+	  arthur=arthur->get_point_ud_0(4,11);
       }
     return arthur;
   }
@@ -645,6 +645,10 @@ namespace FractalSpace
       return point_ud[i];
     *p_FILE << " ud error " << i << " " << tag << endl;
     dump();
+    for(int ni=0;ni<6;ni++)
+      *p_FILE << ni << " " << (point_ud[ni] != 0) << " ";
+    *p_FILE << "\n";
+    p_FILE->flush();
     assert(0);
     return 0;
   }
@@ -654,6 +658,10 @@ namespace FractalSpace
       return point_ud[i];
     *p_FILE << " ud error " << i << endl;
     dump();
+    for(int ni=0;ni<6;ni++)
+      *p_FILE << ni << " " << (point_ud[ni] != 0) << " ";
+    *p_FILE << "\n";
+    p_FILE->flush();
     assert(0);
     return 0;
   }
@@ -693,53 +701,76 @@ namespace FractalSpace
   {
     p_daughter_point=p_d_point;
   }
+  bool Point::cube_test()
+  {
+    Point* p=this;
+    for(int ni :{1,3,0,5,1,2,0})
+      {
+	Point* pp=p;
+	p=p->get_point_ud(ni);
+	if(p)
+	  continue;
+	*p_FILE << " CUBE TEST A ";
+	this->dump();
+	*p_FILE << " CUBE TEST B ";
+	pp->dump();
+	// p_FILE->flush();
+	return false;
+      }
+    return true;
+  }
   void Point::point_pointers_all(Point& high_point)
   {
+    if(!high_point.cube_test())
+      {
+	*p_FILE << " CUBE C " << " " << "\n";
+	p_FILE->flush();
+      }
     this->point_pointer=&high_point;
 
-    Point* hh=high_point.get_point_ud_0(1);
-    Point* p=(get_point_ud_0(1))->get_point_ud_0(1);
+    Point* hh=high_point.get_point_ud_0(1,112);
+    Point* p=(get_point_ud_0(1,212))->get_point_ud_0(1,312);
     p->point_pointer=hh;
     hh->p_daughter_point=p;
 
-    hh=hh->get_point_ud_0(3);
-    p=(p->get_point_ud_0(3))->get_point_ud_0(3);
+    hh=hh->get_point_ud_0(3,412);
+    p=(p->get_point_ud_0(3,512))->get_point_ud_0(3,612);
     p->point_pointer=hh;
     hh->p_daughter_point=p;
 
-    hh=hh->get_point_ud_0(0);
-    p=(p->get_point_ud_0(0))->get_point_ud_0(0);
+    hh=hh->get_point_ud_0(0,712);
+    p=(p->get_point_ud_0(0,812))->get_point_ud_0(0,912);
     p->point_pointer=hh;
     hh->p_daughter_point=p;
 
-    hh=hh->get_point_ud_0(5);
-    p=(p->get_point_ud_0(5))->get_point_ud_0(5);
+    hh=hh->get_point_ud_0(5,1012);
+    p=(p->get_point_ud_0(5,1112))->get_point_ud_0(5,1212);
     p->point_pointer=hh;
     hh->p_daughter_point=p;
 
-    hh=hh->get_point_ud_0(1);
-    p=(p->get_point_ud_0(1))->get_point_ud_0(1);
+    hh=hh->get_point_ud_0(1,1312);
+    p=(p->get_point_ud_0(1,1412))->get_point_ud_0(1,1512);
     p->point_pointer=hh;
     hh->p_daughter_point=p;
 
-    hh=hh->get_point_ud_0(2);
-    p=(p->get_point_ud_0(2))->get_point_ud_0(2);
+    hh=hh->get_point_ud_0(2,1612);
+    p=(p->get_point_ud_0(2,1712))->get_point_ud_0(2,1812);
     p->point_pointer=hh;
     hh->p_daughter_point=p;
 
-    hh=hh->get_point_ud_0(0);
-    p=(p->get_point_ud_0(0))->get_point_ud_0(0);
+    hh=hh->get_point_ud_0(0,1912);
+    p=(p->get_point_ud_0(0,2012))->get_point_ud_0(0,2112);
     p->point_pointer=hh;
     hh->p_daughter_point=p;
   }
   double Point::laplacian() const
   {
-    return get_point_ud_0(0)->potential_point+
-      get_point_ud_0(1)->potential_point+
-      get_point_ud_0(2)->potential_point+
-      get_point_ud_0(3)->potential_point+
-      get_point_ud_0(4)->potential_point+
-      get_point_ud_0(5)->potential_point-
+    return get_point_ud_0(0,13)->potential_point+
+      get_point_ud_0(1,13)->potential_point+
+      get_point_ud_0(2,13)->potential_point+
+      get_point_ud_0(3,13)->potential_point+
+      get_point_ud_0(4,13)->potential_point+
+      get_point_ud_0(5,13)->potential_point-
       6.0*potential_point;
   }
 //   void Point::force_shear_point_make()
@@ -811,19 +842,19 @@ namespace FractalSpace
   void Point::copy_force_point_6()
   {
     for(int ni=0;ni<3;ni++)
-      force_point[ni]=(get_point_ud_0(0)->force_point[ni]+get_point_ud_0(1)->force_point[ni]+get_point_ud_0(2)->force_point[ni]+
-		       get_point_ud_0(3)->force_point[ni]+get_point_ud_0(4)->force_point[ni]+get_point_ud_0(5)->force_point[ni])/6.0;
+      force_point[ni]=(get_point_ud_0(0,14)->force_point[ni]+get_point_ud_0(1,14)->force_point[ni]+get_point_ud_0(2,14)->force_point[ni]+
+		       get_point_ud_0(3,14)->force_point[ni]+get_point_ud_0(4,14)->force_point[ni]+get_point_ud_0(5,14)->force_point[ni])/6.0;
   }
   void Point::copy_force_point_4(vector <int>& witch)
   {
     for(int ni=0;ni<3;ni++)
-      force_point[ni]=(get_point_ud_0(witch[0])->force_point[ni]+get_point_ud_0(witch[1])->force_point[ni]+
-		       get_point_ud_0(witch[2])->force_point[ni]+get_point_ud_0(witch[3])->force_point[ni])*0.25;
+      force_point[ni]=(get_point_ud_0(witch[0],15)->force_point[ni]+get_point_ud_0(witch[1],15)->force_point[ni]+
+		       get_point_ud_0(witch[2],15)->force_point[ni]+get_point_ud_0(witch[3],15)->force_point[ni])*0.25;
   }
   void Point::copy_force_point_2(vector <int>& witch)
   {
     for(int ni=0;ni<3;ni++)
-      force_point[ni]=(get_point_ud_0(witch[0])->force_point[ni]+get_point_ud_0(witch[1])->force_point[ni])*0.5;
+      force_point[ni]=(get_point_ud_0(witch[0],16)->force_point[ni]+get_point_ud_0(witch[1],16)->force_point[ni])*0.5;
   }
   void Point::copy_force_point_1()
   {
@@ -838,17 +869,17 @@ namespace FractalSpace
   }
   void Point::copy_potential_point_6()
   {
-    potential_point=(get_point_ud_0(0)->potential_point+get_point_ud_0(1)->potential_point+get_point_ud_0(2)->potential_point+
-		     get_point_ud_0(3)->potential_point+get_point_ud_0(4)->potential_point+get_point_ud_0(5)->potential_point)/6.0;
+    potential_point=(get_point_ud_0(0,17)->potential_point+get_point_ud_0(1,17)->potential_point+get_point_ud_0(2,17)->potential_point+
+		     get_point_ud_0(3,17)->potential_point+get_point_ud_0(4,17)->potential_point+get_point_ud_0(5,17)->potential_point)/6.0;
   }
   void Point::copy_potential_point_4(vector <int>& witch)
   {
-    potential_point=(get_point_ud_0(witch[0])->potential_point+get_point_ud_0(witch[1])->potential_point+
-		     get_point_ud_0(witch[2])->potential_point+get_point_ud_0(witch[3])->potential_point)*0.25;
+    potential_point=(get_point_ud_0(witch[0],18)->potential_point+get_point_ud_0(witch[1],18)->potential_point+
+		     get_point_ud_0(witch[2],18)->potential_point+get_point_ud_0(witch[3],18)->potential_point)*0.25;
   }
   void Point::copy_potential_point_2(vector <int>& witch)
   {
-    potential_point=(get_point_ud_0(witch[0])->potential_point+get_point_ud_0(witch[1])->potential_point)*0.5;
+    potential_point=(get_point_ud_0(witch[0],19)->potential_point+get_point_ud_0(witch[1],19)->potential_point)*0.5;
   }
   void Point::copy_potential_point_1()
   {
@@ -862,14 +893,25 @@ namespace FractalSpace
   }
   void Point::diff_pot(const double& conv)
   {
-    force_point[0]=(get_point_ud_0(0)->potential_point-get_point_ud_0(1)->potential_point)*conv;
-    force_point[1]=(get_point_ud_0(2)->potential_point-get_point_ud_0(3)->potential_point)*conv;
-    force_point[2]=(get_point_ud_0(4)->potential_point-get_point_ud_0(5)->potential_point)*conv;
+    force_point[0]=(get_point_ud_0(0,20)->potential_point-get_point_ud_0(1,20)->potential_point)*conv;
+    force_point[1]=(get_point_ud_0(2,20)->potential_point-get_point_ud_0(3,20)->potential_point)*conv;
+    force_point[2]=(get_point_ud_0(4,20)->potential_point-get_point_ud_0(5,20)->potential_point)*conv;
+    // *p_FILE << " Careful In " << " ";
+    // dumppf();
   }
   void Point::diff_pot_careful(const double& conv)
   {
     if(point_ud[0] != 0 && point_ud[1] != 0 && point_ud[2] != 0 && point_ud[3] != 0 && point_ud[4] != 0 && point_ud[5] != 0)
-      diff_pot(conv);
+      {
+	diff_pot(conv);
+	// *p_FILE << " Careful Out " << " ";
+	// dumppf();
+      }
+    else
+      {
+	// dumpd();
+	// *p_FILE << " Careful No " << "\n";
+      }
   }
   void Point::diff_force(const double& conv)
   {
@@ -912,19 +954,19 @@ namespace FractalSpace
   template <class T> void Point::add_density_at_points(vector <T>& d)
   {
     density_point+=d[0];
-    Point* p=get_point_ud_0(1);
+    Point* p=get_point_ud_0(1,21);
     p->density_point+=d[1];
-    p=p->get_point_ud_0(3);
+    p=p->get_point_ud_0(3,21);
     p->density_point+=d[3];
-    p=p->get_point_ud_0(0);
+    p=p->get_point_ud_0(0,21);
     p->density_point+=d[2];
-    p=p->get_point_ud_0(5);
+    p=p->get_point_ud_0(5,21);
     p->density_point+=d[6];
-    p=p->get_point_ud_0(1);
+    p=p->get_point_ud_0(1,21);
     p->density_point+=d[7];
-    p=p->get_point_ud_0(2);
+    p=p->get_point_ud_0(2,21);
     p->density_point+=d[5];
-    p=p->get_point_ud_0(0);
+    p=p->get_point_ud_0(0,21);
     p->density_point+=d[4];
   }
   template void Point::add_density_at_points(vector <double>& d);
@@ -951,37 +993,37 @@ namespace FractalSpace
     fx[0]=force_point[0];
     fy[0]=force_point[1];
     fz[0]=force_point[2];
-    Point* p=get_point_ud_0(1);
+    Point* p=get_point_ud_0(1,22);
     pott[1]=p->potential_point;
     fx[1]=p->force_point[0];
     fy[1]=p->force_point[1];
     fz[1]=p->force_point[2];
-    p=p->get_point_ud_0(3);
+    p=p->get_point_ud_0(3,22);
     pott[3]=p->potential_point;
     fx[3]=p->force_point[0];
     fy[3]=p->force_point[1];
     fz[3]=p->force_point[2];
-    p=p->get_point_ud_0(0);
+    p=p->get_point_ud_0(0,22);
     pott[2]=p->potential_point;
     fx[2]=p->force_point[0];
     fy[2]=p->force_point[1];
     fz[2]=p->force_point[2];
-    p=p->get_point_ud_0(5);
+    p=p->get_point_ud_0(5,22);
     pott[6]=p->potential_point;
     fx[6]=p->force_point[0];
     fy[6]=p->force_point[1];
     fz[6]=p->force_point[2];
-    p=p->get_point_ud_0(1);
+    p=p->get_point_ud_0(1,22);
     pott[7]=p->potential_point;
     fx[7]=p->force_point[0];
     fy[7]=p->force_point[1];
     fz[7]=p->force_point[2];
-    p=p->get_point_ud_0(2);
+    p=p->get_point_ud_0(2,22);
     pott[5]=p->potential_point;
     fx[5]=p->force_point[0];
     fy[5]=p->force_point[1];
     fz[5]=p->force_point[2];
-    p=p->get_point_ud_0(0);
+    p=p->get_point_ud_0(0,22);
     pott[4]=p->potential_point;
     fx[4]=p->force_point[0];
     fy[4]=p->force_point[1];
@@ -996,49 +1038,49 @@ namespace FractalSpace
     fyy[0]=force_shear_point[3];
     fyz[0]=force_shear_point[4];
     fzz[0]=force_shear_point[5];
-    Point* p=get_point_ud_0(1);
+    Point* p=get_point_ud_0(1,23);
     fxx[1]=p->force_shear_point[0];
     fxy[1]=p->force_shear_point[1];
     fxz[1]=p->force_shear_point[2];
     fyy[1]=p->force_shear_point[3];
     fyz[1]=p->force_shear_point[4];
     fzz[1]=p->force_shear_point[5];
-    p=p->get_point_ud_0(3);
+    p=p->get_point_ud_0(3,23);
     fxx[3]=p->force_shear_point[0];
     fxy[3]=p->force_shear_point[1];
     fxz[3]=p->force_shear_point[2];
     fyy[3]=p->force_shear_point[3];
     fyz[3]=p->force_shear_point[4];
     fzz[3]=p->force_shear_point[5];
-    p=p->get_point_ud_0(0);
+    p=p->get_point_ud_0(0,23);
     fxx[2]=p->force_shear_point[0];
     fxy[2]=p->force_shear_point[1];
     fxz[2]=p->force_shear_point[2];
     fyy[2]=p->force_shear_point[3];
     fyz[2]=p->force_shear_point[4];
     fzz[2]=p->force_shear_point[5];
-    p=p->get_point_ud_0(5);
+    p=p->get_point_ud_0(5,23);
     fxx[6]=p->force_shear_point[0];
     fxy[6]=p->force_shear_point[1];
     fxz[6]=p->force_shear_point[2];
     fyy[6]=p->force_shear_point[3];
     fyz[6]=p->force_shear_point[4];
     fzz[6]=p->force_shear_point[5];
-    p=p->get_point_ud_0(1);
+    p=p->get_point_ud_0(1,23);
     fxx[7]=p->force_shear_point[0];
     fxy[7]=p->force_shear_point[1];
     fxz[7]=p->force_shear_point[2];
     fyy[7]=p->force_shear_point[3];
     fyz[7]=p->force_shear_point[4];
     fzz[7]=p->force_shear_point[5];
-    p=p->get_point_ud_0(2);
+    p=p->get_point_ud_0(2,23);
     fxx[5]=p->force_shear_point[0];
     fxy[5]=p->force_shear_point[1];
     fxz[5]=p->force_shear_point[2];
     fyy[5]=p->force_shear_point[3];
     fyz[5]=p->force_shear_point[4];
     fzz[5]=p->force_shear_point[5];
-    p=p->get_point_ud_0(0);
+    p=p->get_point_ud_0(0,23);
     fxx[4]=p->force_shear_point[0];
     fxy[4]=p->force_shear_point[1];
     fxz[4]=p->force_shear_point[2];
@@ -1054,37 +1096,37 @@ namespace FractalSpace
   void Point::get_field_values(vector <double>& pott) const
   {
     pott[0]=potential_point;
-    Point* p=get_point_ud_0(1);
+    Point* p=get_point_ud_0(1,24);
     pott[1]=p->potential_point;
-    p=p->get_point_ud_0(3);
+    p=p->get_point_ud_0(3,24);
     pott[3]=p->potential_point;
-    p=p->get_point_ud_0(0);
+    p=p->get_point_ud_0(0,24);
     pott[2]=p->potential_point;
-    p=p->get_point_ud_0(5);
+    p=p->get_point_ud_0(5,24);
     pott[6]=p->potential_point;
-    p=p->get_point_ud_0(1);
+    p=p->get_point_ud_0(1,24);
     pott[7]=p->potential_point;
-    p=p->get_point_ud_0(2);
+    p=p->get_point_ud_0(2,24);
     pott[5]=p->potential_point;
-    p=p->get_point_ud_0(0);
+    p=p->get_point_ud_0(0,24);
     pott[4]=p->potential_point;
   }
   void Point::get_density_points(vector <double>& dens)
   {
     dens[0]=density_point;
-    Point* p=get_point_ud_0(1);
+    Point* p=get_point_ud_0(1,25);
     dens[1]=p->density_point;
-    p=p->get_point_ud_0(3);
+    p=p->get_point_ud_0(3,25);
     dens[3]=p->density_point;
-    p=p->get_point_ud_0(0);
+    p=p->get_point_ud_0(0,25);
     dens[2]=p->density_point;
-    p=p->get_point_ud_0(5);
+    p=p->get_point_ud_0(5,25);
     dens[6]=p->density_point;
-    p=p->get_point_ud_0(1);
+    p=p->get_point_ud_0(1,25);
     dens[7]=p->density_point;
-    p=p->get_point_ud_0(2);
+    p=p->get_point_ud_0(2,25);
     dens[5]=p->density_point;
-    p=p->get_point_ud_0(0);
+    p=p->get_point_ud_0(0,25);
     dens[4]=p->density_point;
   }
   void Point::dumpy() const
@@ -1138,11 +1180,12 @@ namespace FractalSpace
   }
   void Point::dumppf() const
   {
-    *p_FILE << "dumppf " << this << " ";
+    *p_FILE << "dumppf " << " ";
     *p_FILE << inside << " ";
     *p_FILE << edge_point << " ";
     *p_FILE << buffer_point << " ";
     *p_FILE << passive_point << " ";
+    *p_FILE << really_passive << " ";
     *p_FILE << real_pointer << " ";
     *p_FILE << pos_point[0] << " ";
     *p_FILE << pos_point[1] << " ";
@@ -1151,7 +1194,17 @@ namespace FractalSpace
     *p_FILE << potential_point << " ";
     *p_FILE << force_point[0] << " ";
     *p_FILE << force_point[1] << " ";
-    *p_FILE << force_point[2] << "\n";
+    *p_FILE << force_point[2] << " ";
+    for(int ni=0;ni<6;ni++)
+      {
+	*p_FILE << ni << " ";// << point_ud[ni] << " ";
+	if(point_ud[ni] != 0) 
+	  *p_FILE << point_ud[ni]->pos_point[0] << " " << point_ud[ni]->pos_point[1] << " " << point_ud[ni]->pos_point[2];
+	else
+	  *p_FILE << " -1 -1 -1 ";
+	*p_FILE << " ";
+      }
+	*p_FILE << "\n";
   }
   void Point::dump() const
   {
@@ -1164,6 +1217,7 @@ namespace FractalSpace
     *p_FILE << edge_point << " ";
     *p_FILE << buffer_point << " ";
     *p_FILE << passive_point << " ";
+    *p_FILE << really_passive << " ";
     *p_FILE << real_pointer << "\n";
     //
     for(int ni=0;ni<6;ni++)

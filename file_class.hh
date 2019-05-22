@@ -87,7 +87,6 @@ namespace FractalSpace
     {
       std::string extras("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
       RUN=Run;
-      //      std::cerr << " really basedirectory a " << basedirectory << "\n";
       std::stringstream ssFN;
       ssFN << FractalNodes;
       std::string stringFN=ssFN.str();
@@ -98,7 +97,6 @@ namespace FractalSpace
 
 
       BaseDirectory=basedirectory;
-      //      std::cerr << " new BaseDirectory " << BaseDirectory << "\n";
       std::stringstream streamRank;
       streamRank << Rank;
       std::string sRank=streamRank.str();
@@ -107,7 +105,6 @@ namespace FractalSpace
       for(int ni=0;ni<26;ni++)
 	{
 	  Directory=BaseDirectory+RUN+"_"+extras[ni]+"_"+sRank+"/";
-	  //	  std::cerr << " Really Directory " << Directory << "\n";
 	  char cDirectory[200];
 	  size_t dir_length=Directory.copy(cDirectory,1000,0);
 	  cDirectory[dir_length]='\0';

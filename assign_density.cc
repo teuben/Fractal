@@ -5,6 +5,8 @@ namespace FractalSpace
 {
   void assign_density(Group& group, Fractal& fractal)
   {
+    // bool ROOT=fractal.p_mess->FractalRank==0;
+    // ofstream& FF=fractal.p_file->DUMPS;
     //--------------------------------------------------------------------------------------------------------------------------------
     // equivalength grid_length if total volume done at highest resolution
     //--------------------------------------------------------------------------------------------------------------------------------
@@ -33,12 +35,12 @@ namespace FractalSpace
 	for(auto &ppart : point.list_particles)
 	  {
 	    Particle& particle=*ppart;
+	    particle.get_pos(pos);
 	    if(particle.get_mass() == 0.0)
 	      continue;
 	    //--------------------------------------------------------------------------------------------------------------------------------
 	    //find particle postion in cell
 	    //--------------------------------------------------------------------------------------------------------------------------------
-	    particle.get_pos(pos);
 	    point.get_deltas(pos,d_x,d_y,d_z,scale,d_inv);
 	    //--------------------------------------------------------------------------------------------------------------------------------
 	    // add mass to the eight corners

@@ -92,7 +92,7 @@ namespace FractalSpace
 	    hypre_solve_struct(ni > 0,mem,level,SBoxes,SPoints);
 	    time5=mem.p_mess->Clock();
 	    if(buffer)
-	      add_buffer_values(mem,level,SBoxes,SPoints);
+	      add_buffer_values(mem,level);
 	    time6=mem.p_mess->Clock();
 	  }
 	time7=mem.p_mess->Clock();

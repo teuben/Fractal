@@ -4,7 +4,6 @@ namespace FractalSpace
 {
   class Point{
     int real_pointer;
-    // int point_to_number;
     int high_number;
     Point* point_pointer;
     Point* p_daughter_point;
@@ -51,7 +50,6 @@ namespace FractalSpace
     static std::vector < std::vector <int> > cefc;
     Point():
       real_pointer(-1),
-      // point_to_number(-1),
       high_number(-1),
       point_pointer(0),
       p_daughter_point(0),
@@ -182,8 +180,6 @@ namespace FractalSpace
     int get_pos_point(const int& i) const;
     int get_real_pointer() const;
     void set_real_pointer(const int& i);
-    // void set_point_to_number(const int& i);
-    // int get_point_to_number() const;
     void set_high_number(const int& i);
     int get_high_number() const;
     bool get_inside() const;
@@ -192,15 +188,7 @@ namespace FractalSpace
     void set_passive_point(const bool& value);
     bool get_really_passive() const;
     void set_really_passive(const bool& value);
-    // void set_ij_number(const int& count);
-    // int get_ij_number() const;
     void really_clear(std::vector <Point*>& die);
-    // void set_ij_neighbors();
-    // void set_ij_neighbors(std::vector <int>& Box);
-    // void get_ij_neighbors(std::vector <int>& ijud) const;
-    // int get_ij_neighbors_size() const;
-    // void copy_ij_index(const int& ijc);
-    // void get_hypre_info(int& ij_index,std::vector <int>& ijud,double& rho,double& pot) const;
     bool get_it_is_high() const;
     void set_it_is_high(const bool& value);
     bool get_it_is_really_high() const;
@@ -224,7 +212,6 @@ namespace FractalSpace
     void set_force_point_z(const double& f);
     void set_FILE(std::ofstream* p_filE);
     std::ofstream* get_FILE();
-//     void all_mine(std::vector <Point*>& pointers,std::vector <bool>& belongs_to_me);
     Point* move_adj(const int& ra,const int& rb);
     Point* move_rp(const int& r);
     void get_point_ud(std::vector <Point*>& point_6) const;
@@ -251,6 +238,7 @@ namespace FractalSpace
     void set_point_pointer(Point* p_point);
     Point* get_p_daughter_point() const;
     void set_p_daughter_point(Point* p_d_point);
+    bool cube_test();
     void point_pointers_all(Point& high_point);
     double laplacian() const;
     void force_shear_point_make();

@@ -14,10 +14,20 @@ namespace FractalSpace
 		   int number_particles,
 		   vector <double>& xmini,vector <double>& xmaxy)
   {
+    static bool DONEIT=false;
+    static vector<double>xminold=xmin;
+    static vector<double>xmaxold=xmax;
+    static vector<double>cenold={(xmin[0]+xmax[0])/2.0,(xmin[1]+xmax[1])/2.0,(xmin[2]+xmax[2])/2.0};
     xmini=xmin;
     xmaxy=xmax;
     if(SHRINK < 1.0e-5)
-      return;
+      {
+	xminold=xmin;
+	xmaxold=xmax;
+	cenold={(xmin[0]+xmax[0])/2.0,(xmin[1]+xmax[1])/2.0,(xmin[2]+xmax[2])/2.0};
+	DONEIT=true;
+	return;
+      }
     SHRINK=min(SHRINK,1.0);
     vector <double>minimax(6);
     vector<pair<int,int>>mm;
@@ -39,19 +49,35 @@ namespace FractalSpace
 	center[ni]=(minimax[ni+3]+minimax[ni])*0.5;
 	dmax=max(dmax,minimax[ni+3]-minimax[ni]);
       }
-    // if(dmax >=xmax[0]-xmin[0])
-    //   {
-    // 	xmini=xmin;
-    // 	xmaxy=xmax;
-    // 	return;
-    //   }
     dmax=dmax*SHRINK+(xmax[0]-xmin[0])*(1.0-SHRINK);
+    bool toobig=dmax > xmax[0]-xmin[0];
     dmax=min(dmax,xmax[0]-xmin[0]);
     for(int ni : {0,1,2})
       {
-	xmini[ni]=center[ni]-dmax*0.51;
-	xmaxy[ni]=center[ni]+dmax*0.51;
+	xmini[ni]=center[ni]-dmax*0.53;
+	xmaxy[ni]=center[ni]+dmax*0.53;
       }
+    if(!toobig)
+      {
+	xminold=xmini;
+	xmaxold=xmaxy;
+	cenold=center;
+	return;
+      }
+    auto firstx=posxb;
+    auto lastx=posxb+number_particles;
+    auto firsty=posyb;
+    auto firstz=poszb;
+    double dmaxold=xmaxold[0]-xminold[0];
+    vector<int>sump(27,0);
+    while(firstx != lastx)
+      {
+	firstx++;
+	firsty++;
+	firstz++;
+      }
+
+
     if(PFM->p_mess->FractalRank == 0)
       cerr << " Shrink Cube " << PFM->steps << " " << xmini[0] << " " << xmini[1] << " " << xmini[2] << " "  << xmaxy[0] << " " << xmaxy[1] << " " << xmaxy[2] << " " << pow(dmax*1.02,3) << "\n";
   }
@@ -109,8 +135,8 @@ namespace FractalSpace
     dmax=dmax*SHRINK+(xmax[0]-xmin[0])*(1.0-SHRINK);
     for(int ni : {0,1,2})
       {
-	xmini[ni]=center[ni]-dmax*0.51;
-	xmaxy[ni]=center[ni]+dmax*0.51;
+	xmini[ni]=center[ni]-dmax*0.53;
+	xmaxy[ni]=center[ni]+dmax*0.53;
       }
     if(PFM->p_mess->FractalRank == 0)
       cerr << " Shrink Box " << PFM->steps << " " << xmini[0] << " " << xmini[1] << " " << xmini[2] << " "  << xmaxy[0] << " " << xmaxy[1] << " " << xmaxy[2] << " " << pow(dmax*1.02,3) << "\n";

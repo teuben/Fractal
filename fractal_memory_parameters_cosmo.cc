@@ -33,8 +33,8 @@ namespace FractalSpace
     // I will let you guess, you are wrong. It needs to be = grid_length**3/FractalNodes.
     mem.max_particles=(double)(mem.number_particles)*_mulT_+0.5;
     //The max number of particles the initial conditions code can generate through particle splitting
+    //    mem.level_max = 0 ; ///////
     mem.level_max = 10 ; 
-    //    mem.level_max = 0 ; 
     mem.global_level_max=mem.level_max;
     mem.highest_level_init=min(mem.highest_level_init,mem.level_max);
     // highest level, nothing magical about this
@@ -48,7 +48,7 @@ namespace FractalSpace
     mem.padding=min(mem.padding,1);
     // if (-1) high cells are selectively padded so that resolution never jumps more than factor of 2.
     // if (padding > 0) each high cell is padded by (2*padding+1)**3 cells.
-    // padding has to be (0) or(1)in an MPI version
+    // padding has to be (0) or(+-1).
     mem.maxits = 20 ;
     // maximum number of iterations in SOR or Hypre Solver
     mem.HTOL = 1.0e-7;
@@ -59,8 +59,8 @@ namespace FractalSpace
     // Does extra testing and prints out a bunch of diagnostics
     mem.new_points_gen=9;
     //Generate this many Points in each go
-    mem.number_steps_total=906;
-    //    mem.number_steps_total=8;
+    mem.number_steps_total=3006;
+    // mem.number_steps_total=6;
     // Total number of steps
     mem.number_steps_out=20;
     // Output how often

@@ -81,6 +81,7 @@ namespace FractalSpace
 		new_group.list_new_points.push_back(new_points);
 		new_counter=0;
 	      }
+	    // p_point=new_points++;
 	    p_point=&new_points[new_counter];
 	    new_counter++;
 	    assert(p_point);

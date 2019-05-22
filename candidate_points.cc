@@ -3,7 +3,6 @@
 #include "headers.hh"
 namespace FractalSpace
 {
-  //  ofstream& FileFractal=fractal.p_file->FileFractal;
   vector <bool> Point::left(27);
   vector <bool> Point::corner(27);
   vector <bool> Point::edge(27);
@@ -272,7 +271,6 @@ namespace FractalSpace
 	    int y=ply+play;
 	    int x=plx+plax;
 	    int xyz=x+3*y+9*z;
-	    //	    FileFractal << "candid " << pl << " " << pla << "   " << x << " " << y << " " << z << "  ";
 	    for(int ph=0;ph < 27;ph++)
 	      {
 		int phz=ph/9;
@@ -293,13 +291,11 @@ namespace FractalSpace
 			  {
 			    int which=(pl*27+pla)*8;
 			    Point::phl[which+Point::dupes[pl*27+pla]]=ph*27+plb;
-			    //			    FileFractal << ph << " " << plb << " " << which+Point::dupes[pl*27+pla] << " " ;
 			    Point::dupes[pl*27+pla]++;
 			  }
 		      }
 		  }
 	      }
-	    //	    FileFractal << "\n";
 	  }
       }
     int positions[27][27];

@@ -3,24 +3,29 @@
 #include "headers.hh"
 namespace FractalSpace
 {
-  void high_points(Group& group,Fractal& fractal,Misc& misc)
+  void high_points(Group& group,Fractal_Memory& mem,Misc& misc)
   {
-    fractal.timing(-1,9);
+    mem.p_fractal->timing(-1,9);
     group.p_list_really_high.clear();
-    int ni=0;
-    for(auto &p_point : group.list_points)
+    int level=group.get_level();
+    vector<int>BBox=mem.BBoxesLev[mem.p_mess->FractalRank][level];
+    for(auto &p : group.list_points)
       {
-	Point& point=*p_point;
-	if(!point.get_passive_point() && check_high(point,fractal) && high_enough_level(point,group,fractal,misc))
+	bool okay=p->get_inside();
+	if(p->get_edge_point())
 	  {
-	    point.set_it_is_high(true);
-	    point.set_it_is_really_high(true);
-	    group.p_list_really_high.push_back(p_point);
-	    ni++;
+	    auto ar3=p->get_pos_point_a();
+	    okay=ar3[0] < BBox[1] && ar3[1] < BBox[3] && ar3[2] < BBox[5];
+	  }
+	if(okay && check_high(*p,*mem.p_fractal))
+	  {
+	    p->set_it_is_high(true);
+	    p->set_it_is_really_high(true);
+	    group.p_list_really_high.push_back(p);
 	  }
       }
-    group.set_number_high_points(ni);
-    fractal.timing(1,9);
+    group.set_number_high_points(group.p_list_really_high.size());
+    mem.p_fractal->timing(1,9);
   }
   bool high_enough_level(Point& point,Group& group,Fractal& fractal,Misc& misc)
   {

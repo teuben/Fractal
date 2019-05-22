@@ -1,7 +1,6 @@
 namespace FractalSpace
 {
-  void add_buffer_values(Fractal_Memory& mem,int level,
-			 vector < vector<int> >& SBoxes,vector < vector<Point*> >& SPoints);
+  void add_buffer_values(Fractal_Memory& mem,int level);
   void add_pseudo_particles(Fractal_Memory& mem,Fractal& frac);
   void adj_nina(Point& point,vector <Point*>& adj);
   double Age_of_the_universe (const double& omega_0, const double& omega_lambda, const double& redshift);
@@ -89,7 +88,7 @@ namespace FractalSpace
   bool high_enough_level(Point& point,Group& group,Fractal& fractal,Misc& misc);
   void high_groups(Group& group);
   void high_pairs(Group& group);
-  void high_points(Group& group, Fractal& fractal,Misc& misc);
+  void high_points(Group& group, Fractal_Memory& mem,Misc& misc);
   double Hubble (const double& omega_0, const double& omega_lambda, const double& redshift);
   void hypre_best_boxes(Fractal_Memory& mem,vector<vector<Point*> >& hypre_points,int spacing,int& VOLbest,double& FILLbest);
   void hypre_best_boxes(bool buffer,Fractal_Memory& mem,vector<vector<Point*> >& hypre_points,int spacing,int& VOLbest,double& FILLbest);
@@ -153,12 +152,14 @@ namespace FractalSpace
   void neighbors_nina(Point& point, vector <Point*>& adj);
   void node_groups_struct(Fractal_Memory& mem,vector <int>& counts);
   double Omega (const double& omega_0, const double& omega_lambda, const double& redshift);
-  bool on_edge(vector <int>& pos,vector <int>& Box);
-  bool on_edge(array <int,3>& pos,vector <int>& Box);
-  bool on_edge(Point* p,vector <int>& Box);
+  bool on_edge(vector <int>& pos,const vector <int>& Box);
+  bool on_edge(array <int,3>& pos,const vector <int>& Box);
+  bool on_edge(Point* p,const vector <int>& Box);
   template <class T> bool overlap(vector <T>& xleft,vector <T>& xright,vector <T>& yleft,vector <T>& yright);
   template <class T> bool overlap(vector <T>& xleft,vector <T>& xright,vector <T>& box);
-  template <class T> bool overlap_boxes(vector <T>& xvec,vector <T>& box);
+  template <class T> bool overlap_boxes(vector <T>& boxa,vector <T>& boxb);
+  template <class T> bool overlap_boxes(vector <T>& boxa,vector <T>& boxb,T width,bool periodic);
+  template <class T> void overlap_boxes_corners(vector <T>& boxa,vector <T>& boxb,vector<int>& corner_list);
   template <class T> bool overlap_interval(T Imin,T Imax,T Jmin,T Jmax,T& LOW,T& HIGH);
   void particle_lists(vector <vector <Group*> >& all_groups,Fractal& fractal,Fractal& fractal_ghost,Misc& misc);
   void particle_lists_fixed(vector <vector <Group*> >& all_groups,Fractal& fractal,Misc& misc);
@@ -169,6 +170,7 @@ namespace FractalSpace
   void power_spectrum(fftw_complex* rhoC,int length,vector <double>& variance_rho,vector <double>& variance_pot,
 		      vector <double>& variance_force,vector <double>& variance_force_s,int lev,double d0,bool do_var,
 		      Fractal_Memory& mem);
+  void problem_points(Group& group);
   bool rad_compare(Particle* par1,Particle* par2);
   bool right_diff(vector <int>& Va,vector <int>& Vb,vector <int>& VD);
   void remove_dupe_points(int spacing,vector<vector<Point*>>& hypre_points,vector<vector<int>>& SBoxes,vector<vector<Point*>>& SPoints);
@@ -200,8 +202,11 @@ namespace FractalSpace
   void sort_3(Fractal& fractal,Group& group);
   int spawn(const vector <double>& pos, vector < vector <double> > ppos,const vector <double>& boxouter);
   void split_nodes(int FR,int& FR0,int& FR1,int& FR2);
-  template <class M, class F> int split_particle(M& mem,F& frac,const double& x0,const double& y0,const double& z0,
-						 int& count,const double& m,const int& split_to,const bool& gen_part);
+  // template <class M, class F> int split_particle(M& mem,F& frac,const double& x0,const double& y0,const double& z0,
+  // 						 int& count,const double& m,const int& split_to,const bool& gen_part);
+  int split_particle(Fractal_Memory& mem,Fractal& frac,
+		     const double& x0,const double& y0,const double& z0,
+		     int& count,const double& m,const int& split_to,const bool& gen_part);
   template <class ForwardIterator>
   void start_writing(Fractal_Memory* PFM,int Numberparticles,
 		     double G,vector <double>& xmin,vector <double>& xmax,
@@ -239,6 +244,7 @@ namespace FractalSpace
   Point* try_harder(Point& point0,const int& ni,const bool& easy);
   void update_rv(Fractal& fractal,const int& param,const double& const1,const double& const2);
   void use_freenodes(Fractal_Memory& mem,vector<int>& countsP);
+  template <class T> bool vector_in_box(vector <T>& xvec,vector <T>& box,T width,bool periodic);
   template <class T> bool vector_in_box(vector <T>& xvec,vector <T>& box);
   template <class T> bool vector_in_box(array <T,3>& xvec,vector <T>& box);
   bool vector_in_box(Point* p,vector <int>& box);

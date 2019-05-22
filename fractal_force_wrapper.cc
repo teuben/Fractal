@@ -9,12 +9,9 @@ namespace FractalSpace
     ofstream& FileFractal=PFM->p_file->DUMPS;
     vector <int>BOXA=PFM->Boxes[PFM->p_mess->FractalRank];
     FileFractal << " BOXA " << BOXA[0] << " " << BOXA[1] << " " << BOXA[2] << " " << BOXA[3] << " " << BOXA[4] << " " << BOXA[5] << "\n";
-    FileFractal << " hahaa " << PFM << " " << PF << "\n";
     Fractal_Memory& FM=*PFM;
     FM.balance=1;
-    FileFractal << " hahab " << PFM<< "\n";
     Fractal& FR=*PF;
-    FileFractal << " hahac " << PF << " " << PF->p_file << "\n";
     FileFractal << FM.p_mess->FractalRank << " starting out " << "\n";
     vector <int> Box(6);
     FR.getBox(Box);
@@ -46,13 +43,11 @@ namespace FractalSpace
       }
     if(FM.balance > 0)
       balance_by_particles(&FM,false);
-    // int _mulT_=FM.max_particles/FM.number_particles;
     int count=0;
     make_particles(FM,FR,count,m,false);
     FileFractal << "size " << count << "\n";
     FM.number_particles=count;
     FR.set_number_particles(count);
-    // FM.max_particles=FM.number_particles*_mulT_;
     update_rv(FR,0,0.0,0.0);
     FileFractal << "make parts " << FM.number_particles << " " << FM.max_particles << "\n";
     double delta_z=Growth(FM.omega_0,FM.omega_lambda,FM.redshift_start);

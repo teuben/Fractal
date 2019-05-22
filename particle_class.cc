@@ -41,6 +41,7 @@ namespace FractalSpace
   }
   void Particle::get_pos(vector <double>& pos) const
   {
+    // assert(pos.size() >= 3);
     assert(phase_space.size() >= 3);
     pos[0]=phase_space[0];
     pos[1]=phase_space[1];

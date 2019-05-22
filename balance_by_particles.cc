@@ -14,7 +14,6 @@ namespace FractalSpace
     const int FractalNodes0=PFM->FractalNodes0;
     const int FractalNodes1=PFM->FractalNodes1;
     const int FractalNodes2=PFM->FractalNodes2;
-    // const int FractalNodes=PFM->FractalNodes;
     const int FFTNodes=PFM->FFTNodes;
     const int ROOTNODE=PFM->p_mess->ROOTNODE;
     int how_many_particles=0;
@@ -252,8 +251,6 @@ namespace FractalSpace
 	    for(int FR0=0;FR0<FractalNodes0;FR0++)
 	      {
 		targets[FR0]/=targets[FractalNodes0];
-		//		if(FractalRank == 0)
-		//		  cerr << " Target0 " << FR0 << " " << targets[FR0] << "\n";
 	      }
 	    if(FractalRank == ROOTNODE)
 	      {

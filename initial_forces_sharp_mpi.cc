@@ -58,8 +58,6 @@ namespace FractalSpace
 	int cut_lev=-1;
 	if(lev > 0) cut_lev=nyq/2;
 	double step_wave=pow(2.0,lev);
-	//	int begin_x=mem.p_mess->start_x;
-	//	int end_x=begin_x+mem.p_mess->length_x;
 	for(pint kx=mem.p_mess->start_x;kx < mem.p_mess->start_x+mem.p_mess->length_x; kx++)
 	  {
 	    int ka=min(kx,length-kx);
@@ -81,6 +79,12 @@ namespace FractalSpace
 		    double amplitude_raw=0.0;
 		    if(k > 0.001 && !shorty)
 		      amplitude_raw=sqrt(boost_power*cosmos_power(k/mem.scaling,mem));
+		    //
+		    //
+		    // if(!(kz == 1 && ky == 0 && kx ==0))
+		      // amplitude_raw*=1.0e-30;
+		    //
+		    //
 		    double angle=0.0;
 		    if(!nyquist)
 		      angle=twopi*Fractal::my_rand(rand_max);
@@ -239,6 +243,5 @@ namespace FractalSpace
       } 
     sum_pot_forces(frac);
     //
-    //    mem.p_mess->free_potRC();
   }
 }
