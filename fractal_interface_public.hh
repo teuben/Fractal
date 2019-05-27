@@ -17,15 +17,15 @@ namespace FractalSpace
 					  std::string BaseDirectory,
 					  std::string RunIdentifier
 					  );
-  Fractal_Memory* FractalGravityIsolatedFirstTime(
-						  MPI_Comm& TalkToMe,
-						  int GridLength,
-						  int FractalNodes0,
-						  int FractalNodes1,
-						  int FractalNodes2,
-						  std::string BaseDirectory,
-						  std::string RunIdentifier
-						  );
+  // Fractal_Memory* FractalGravityIsolatedFirstTime(
+  // 						  MPI_Comm& TalkToMe,
+  // 						  int GridLength,
+  // 						  int FractalNodes0,
+  // 						  int FractalNodes1,
+  // 						  int FractalNodes2,
+  // 						  std::string BaseDirectory,
+  // 						  std::string RunIdentifier
+  // 						  );
   // void FractalGravity(Fractal_Memory* PFM,int NumberParticles,std::vector <double>& xmin,std::vector <double>& xmax, double G);
   // void FractalGravityFinal(Fractal_Memory* PFM);
   // //! One-Stop-Routine for setting up the Fractal_Memory object
@@ -46,7 +46,7 @@ namespace FractalSpace
   //! Delete a Fractal_Memory object
 
   void fractal_memory_content_delete(Fractal_Memory* PFM);
-  //! Delete, gracefully, all contents of a Fractal_Memory object
+  //! Delete, gracefully, all contents of the Singleton Fractal_Memory object
 
   void fractal_create(Fractal_Memory* PFM);
   //! Create a Fractal object

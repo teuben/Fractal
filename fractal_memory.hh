@@ -9,6 +9,121 @@ namespace FractalSpace
 {
   class Fractal_Memory
   {
+  private:
+    Fractal_Memory():
+      //
+      // default values
+      // replace with your own values
+      //
+      BaseDirectory("FFRRAACCTTAALL/"),
+      RUN("abc"),
+      FractalWorld(MPI_COMM_WORLD),
+      standalone(true),
+      MPIrun(true),
+      balance(1),
+      FractalNodes(1),
+      FractalNodes0(1),
+      FractalNodes1(1),
+      FractalNodes2(1),
+      FFTNodes(1234567),
+      SpecialNodes(0),
+      time_trial(true),
+      min_hypre_group_size(45),
+      hypre_load_balance(false),
+      hypre_min_node_load(45),
+      hypre_max_node_load(40000),
+      hypre_multiplier(2.0),
+      G(1.0),
+      amnesia(true),
+      mind_wipe(false),
+      fixed_potential(false),
+      calc_shear(false),
+      start_up(false),
+      calc_density_particle(false),
+      do_vel(false),
+      do_var(false), 
+      periodic(false),
+      random_initial(false),
+      debug(false),
+      halo_fixed(false),
+      momentum_conserve(true),
+      total_points_counter(0),
+      total_points_used(0),
+      total_points_generated(0),
+      new_points_gen(9),
+      random_gen(12345),
+      highest_level_init(6),
+      norm_what(0),
+      spectrum_number(0),
+      number_particles(262144),
+      grid_length(128),
+      moat_0(1),
+      minimum_number(8),
+      padding(-1),
+      level_max(8),
+      number_steps_total(113),
+      number_steps_out(20),
+      random_offset(0),
+      maxits(20),
+      base_mass(1.0),
+      HTOL(1.0e-7),
+      force_max(-1.0),
+      halo_scale(1.0),
+      halo_density0(1.0),
+      off_x(0.501),
+      off_y(0.502),
+      off_z(0.503),
+      sigma_initial(-1.0),
+      scaling(1.0),
+      norm_scale(0.2),
+      power_slope(-1.0),
+      cut_off(1.0e6),
+      cut_off_init(16.0),
+      pexp(0.77),
+      step_length(0.033),
+      omega_start(-1.0),
+      lambda_start(-1.0),
+      redshift_start(49.0),
+      omega_0(0.3),
+      omega_lambda(0.7),
+      omega_b(0.03),
+      box_length(100.0),
+      h(0.7),
+      sigma_0(1.0),
+      //
+      udda(0.0),
+      potential_energy(0.0),
+      potential_energy_old(0.0),
+      kinetic_energy(0.0),
+      kinetic_energy_old(0.0),
+      arad(1.0),
+      time(2.0/3.0),
+      total_mass(1.0),
+      steps(0),
+      level(-10),
+      //
+      crash_levels(0),
+      crash_pow(1.0),
+      density_crash(1.0e30),
+      max_particles(0),
+      splits(0),
+      masks(0)
+    {
+      p_misc=0;
+      p_fractal=0;
+      p_file=0;
+      minimum_number_var={{8,8,7,7,6,6,6,5,5,5,4,4,4,4,4,4}};
+      hypre_solver="PCG";
+      hypre_precond="PFMG";
+      global_level_max=level_max;
+      padding=std::min(padding,1);
+      split_particles= force_max > 0.0;
+      xmin.assign(3,0.0);
+      xmax.assign(3,1.0);
+      //
+    }
+    ~Fractal_Memory()
+    {}
   public:
     //
     std::string BaseDirectory;
@@ -163,123 +278,8 @@ namespace FractalSpace
     Fractal* p_fractal;
     Mess* p_mess;
     File* p_file;
+    static Fractal_Memory* p_fractal_memory_instance;
     static MPI_Comm FRACTAL_UNIVERSE;
-    Fractal_Memory():
-      //
-      // default values
-      // replace with your own values
-      //
-      BaseDirectory("FFRRAACCTTAALL/"),
-      RUN("abc"),
-      FractalWorld(MPI_COMM_WORLD),
-      standalone(true),
-      MPIrun(true),
-      balance(1),
-      FractalNodes(1),
-      FractalNodes0(1),
-      FractalNodes1(1),
-      FractalNodes2(1),
-      FFTNodes(1234567),
-      SpecialNodes(0),
-      time_trial(true),
-      min_hypre_group_size(45),
-      hypre_load_balance(false),
-      hypre_min_node_load(45),
-      hypre_max_node_load(40000),
-      hypre_multiplier(2.0),
-      G(1.0),
-      amnesia(true),
-      mind_wipe(false),
-      fixed_potential(false),
-      calc_shear(false),
-      start_up(false),
-      calc_density_particle(false),
-      do_vel(false),
-      do_var(false), 
-      periodic(false),
-      random_initial(false),
-      debug(false),
-      halo_fixed(false),
-      momentum_conserve(true),
-      total_points_counter(0),
-      total_points_used(0),
-      total_points_generated(0),
-      new_points_gen(9),
-      random_gen(12345),
-      highest_level_init(6),
-      norm_what(0),
-      spectrum_number(0),
-      number_particles(262144),
-      grid_length(128),
-      moat_0(1),
-      minimum_number(8),
-      padding(-1),
-      level_max(8),
-      number_steps_total(113),
-      number_steps_out(20),
-      random_offset(0),
-      maxits(20),
-      base_mass(1.0),
-      HTOL(1.0e-7),
-      force_max(-1.0),
-      halo_scale(1.0),
-      halo_density0(1.0),
-      off_x(0.501),
-      off_y(0.502),
-      off_z(0.503),
-      sigma_initial(-1.0),
-      scaling(1.0),
-      norm_scale(0.2),
-      power_slope(-1.0),
-      cut_off(1.0e6),
-      cut_off_init(16.0),
-      pexp(0.77),
-      step_length(0.033),
-      omega_start(-1.0),
-      lambda_start(-1.0),
-      redshift_start(49.0),
-      omega_0(0.3),
-      omega_lambda(0.7),
-      omega_b(0.03),
-      box_length(100.0),
-      h(0.7),
-      sigma_0(1.0),
-      //
-      udda(0.0),
-      potential_energy(0.0),
-      potential_energy_old(0.0),
-      kinetic_energy(0.0),
-      kinetic_energy_old(0.0),
-      arad(1.0),
-      time(2.0/3.0),
-      total_mass(1.0),
-      steps(0),
-      level(-10),
-      //
-      crash_levels(0),
-      crash_pow(1.0),
-      density_crash(1.0e30),
-      max_particles(0),
-      splits(0),
-      masks(0)
-    {
-      p_misc=0;
-      p_fractal=0;
-      p_file=0;
-      minimum_number_var={{8,8,7,7,6,6,6,5,5,5,4,4,4,4,4,4}};
-      hypre_solver="PCG";
-      hypre_precond="PFMG";
-      global_level_max=level_max;
-      padding=std::min(padding,1);
-      split_particles= force_max > 0.0;
-      xmin.assign(3,0.0);
-      xmax.assign(3,1.0);
-    //
-    }
-    ~Fractal_Memory()
-    {
-      // cerr << "Ending Fractal_Memory " << this << "\n";
-    }
     //
     void set_G(double Cavendish);
     void get_G(double& Cavendish) const;
@@ -297,13 +297,13 @@ namespace FractalSpace
     void fractal_memory_setup(Fractal_Memory* PFM);
     void setBalance(int B);
     void addParticles(int first,int total,
-				      std::vector <double>& xmin,std::vector <double>& xmax,
-				      std::vector <double>& xpos,std::vector <double>& ypos,
-				      std::vector <double>& zpos,std::vector <double>& masses);
+		      std::vector <double>& xmin,std::vector <double>& xmax,
+		      std::vector <double>& xpos,std::vector <double>& ypos,
+		      std::vector <double>& zpos,std::vector <double>& masses);
     void getField(int first,int last,double G,
-				  std::vector <double>& xmin,std::vector <double>& xmax,
-				  std::vector <double>& pot,std::vector <double>& fx,
-				  std::vector <double>& fy,std::vector <double>& fz) const;
+		  std::vector <double>& xmin,std::vector <double>& xmax,
+		  std::vector <double>& pot,std::vector <double>& fx,
+		  std::vector <double>& fy,std::vector <double>& fz) const;
     void setNumberParticles(int NP);
     void setFractalNodes(int FR0,int FR1,int FR2);
     void setFFTNodes(int FN);
@@ -319,19 +319,33 @@ namespace FractalSpace
     void setRunIdentifier(std::string RI);
     void setTimeTrial(bool tt);
     void setTalkToMe(MPI_Comm& ttm);
-  // static functions
-  static double hubble(const double& arad,const double& omega_0,const double& omega_lambda)
-  {
-    return sqrt(omega_0/pow(arad,3)+(1.0-omega_0-omega_lambda)/pow(arad,2)+omega_lambda);
-  }
-  static double omega(const double& arad,const double& omega_0, const double& omega_lambda)
-  {
-    return omega_0/(pow(arad,3)*pow(hubble(arad,omega_0,omega_lambda),2));  
-  }
-  static double lambda(const double& arad,const double& omega_0, const double& omega_lambda)
-  {
-    return omega_lambda/pow(hubble(arad,omega_0,omega_lambda),2);  
-  }
+    // static functions
+    static double hubble(const double& arad,const double& omega_0,const double& omega_lambda)
+    {
+      return sqrt(omega_0/pow(arad,3)+(1.0-omega_0-omega_lambda)/pow(arad,2)+omega_lambda);
+    }
+    static double omega(const double& arad,const double& omega_0, const double& omega_lambda)
+    {
+      return omega_0/(pow(arad,3)*pow(hubble(arad,omega_0,omega_lambda),2));  
+    }
+    static double lambda(const double& arad,const double& omega_0, const double& omega_lambda)
+    {
+      return omega_lambda/pow(hubble(arad,omega_0,omega_lambda),2);  
+    }
+    static Fractal_Memory* NewFractalMemory()
+    {
+      if(!p_fractal_memory_instance)
+	p_fractal_memory_instance=new Fractal_Memory;
+      return p_fractal_memory_instance;
+    }
+    static void DeleteFractalMemory()
+      {
+	if(p_fractal_memory_instance)
+	  delete p_fractal_memory_instance;
+	p_fractal_memory_instance=NULL;
+      }
+    Fractal_Memory(const Fractal_Memory&);
+    Fractal_Memory& operator=(const Fractal_Memory&);
   };
 }
 #endif

@@ -305,6 +305,8 @@ namespace FractalSpace
     {
       return p != 0;
     }
+    Point(const Point&);
+    Point& operator=(const Point&);
   };
 }
 #endif

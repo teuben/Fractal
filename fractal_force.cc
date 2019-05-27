@@ -170,8 +170,7 @@ namespace FractalSpace
     fix_memory(fractal,3,jfield);
     if(Point::calc_candidates)
       candidate_points();
-    Misc* p_misc=new Misc;
-    assert(p_misc);
+    Misc* p_misc=Misc::NewMisc();   // Soliton
     Misc& misc=*p_misc;
     bool debug=fractal.get_debug();
     misc.set_debug(debug);
@@ -353,7 +352,7 @@ namespace FractalSpace
       tree_dump(fractal_memory);
     fractal.timing(1,44);
     fractal.timing(-1,26);
-    clean_up(fractal_memory,misc);
+    clean_up(fractal_memory);
     fractal.timing(1,26);
     Full_Stop(fractal_memory,38);
     fractal.timing_lev(-1,0);

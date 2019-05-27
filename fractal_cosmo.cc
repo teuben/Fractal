@@ -73,29 +73,28 @@ int main(int argc, char* argv[])
   PADDING=max(-1,min(1,PADDING));
   PFM->padding=PADDING;
   PFM->periodic=true;
-  Mess* p_mess=new Mess(true,
-			PFM->grid_length,
-			true,
-			PFM->number_particles,
-			PFM->FractalNodes0,
-			PFM->FractalNodes1,
-			PFM->FractalNodes2,
-			PFM->FFTNodes,
-			Fractal_Memory::FRACTAL_UNIVERSE);
+  Mess* p_mess=Mess::NewMess(true,
+			     PFM->grid_length,
+			     true,
+			     PFM->number_particles,
+			     PFM->FractalNodes0,
+			     PFM->FractalNodes1,
+			     PFM->FractalNodes2,
+			     PFM->FFTNodes,
+			     Fractal_Memory::FRACTAL_UNIVERSE);
   PFM->p_mess=p_mess;
   PFM->FFTNodes=PFM->p_mess->FFTNodes;
-  File* p_file=0;
+  PFM->p_file=0;
   if(BaseDirectory == "")
-    p_file=new File();
+    PFM->p_file=File::NewFile();
   else
-    p_file=new File(PFM->BaseDirectory,
+    PFM->p_file=File::NewFile(PFM->BaseDirectory,
 		    PFM->FractalNodes,
 		    PFM->p_mess->FractalRank,
 		    PFM->RUN);
-  PFM->p_file=p_file;
-  PFM->p_mess->p_file=p_file;
+  PFM->p_mess->p_file=PFM->p_file;
   fractal_force_init(PFM);
-  Fractal* PF=new Fractal(*PFM);
+  Fractal* PF=Fractal::NewFractal(*PFM);
   int result=fractal_force_wrapper(PFM,PF);
   fractal_memory_content_delete(PFM);
   fractal_memory_delete(PFM);

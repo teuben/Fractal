@@ -30,7 +30,7 @@ namespace FractalSpace
   void clean_groups(Fractal_Memory& fractal_memory);
   void clean_shear(Fractal_Memory& fractal_memory);
   void clean_overlaps(Fractal_Memory& mem,int spacing,int VOLMIN,double FILLFACTOR,vector<bool>& STrouble,vector<vector<int>>& SBoxes,vector<vector<Point*>>& SPoints);
-  void clean_up(Fractal_Memory& mem,Misc& misc);
+  void clean_up(Fractal_Memory& mem);
   template <typename T> void clean_vector(vector<T>& vec);
   template <typename T> void clean_deque(deque<T>& deq);
   bool compare_vectorsX(vector <int> veca,vector <int> vecb);

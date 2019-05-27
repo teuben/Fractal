@@ -11,74 +11,7 @@ namespace FractalSpace
 {
   typedef ptrdiff_t pint;
   class Mess{
-  public:
-    int FractalRank;
-    int FractalRank0;
-    int FractalRank1;
-    int FractalRank2;
-    int FractalNodes;
-    int FractalNodes0;
-    int FractalNodes1;
-    int FractalNodes2;
-    int WallNodes;
-    const int N63;
-    int ROOTNODE;
-    int FFTRank;
-    int FFTNodes;
-    int HypreRank;
-    int HypreNodes;
-    int mynumber;
-    int MPI_SWITCH;
-    int MPI_MAX_COMMS;
-    long int number_particles_total;
-    std::deque <Particle*> parts_tmp;
-    std::deque <Particle*> parts_tmpp;
-    Particle* Parts_in;
-    std::vector < std::vector <int> > Slices;
-    std::vector < std::vector <int> > BoxS;
-    std::vector < std::vector <int> > BoxSL;
-    std::vector < std::vector <bool> > counts_on_nodes;
-    std::vector <bool> count_on_node;
-    std::vector<std::vector <int>> node_lists;
-    std::vector <int> freenodes;
-    int glength;
-    pint start_x;
-    pint length_x;
-    pint total_memory;
-    fftw_plan plan_rc;
-    fftw_plan plan_cr;
-    double* potR;
-    double* potRS;
-    fftw_complex* potC; 
-    std::vector <int> WhichSlice;
-    std::vector <double> green;
-    MPI_Comm FractalWorld;
-    MPI_Comm FFTWorld;
-    MPI_Comm HypreWorld;
-    MPI_Group FractalGroup;
-    MPI_Group FFTGroup;
-    MPI_Group HypreGroup;
-    bool IAmPeriodic;
-    bool IAmAnFFTNode;
-    bool IAmAHypreNode;
-    std::vector <int>Franks;
-    std::vector <bool>ItIsAnFFTNode;
-    std::vector <int>Hranks;
-    std::vector <int>IHranks;
-    std::vector <int>Rranks;
-    std::vector <int>IRranks;
-    std::vector <MPI_Comm> MComms;
-    std::vector <MPI_Comm> HComms;
-    std::vector <MPI_Group> HG;
-    bool possibleDANGER;
-    int DANGERlevel;
-    int fftwTAG;
-    bool time_trial;
-    bool standalone;
-    File* p_file;
-    double WallTime;
-    double TreeTime;
-    static bool IAMROOT;
+  private:
     Mess():
       FractalRank(0),
       FractalNodes(1),
@@ -208,6 +141,75 @@ namespace FractalSpace
       if(standalone)
 	MPIFinal();
     }
+    static Mess* p_mess_instance;
+  public:
+    int FractalRank;
+    int FractalRank0;
+    int FractalRank1;
+    int FractalRank2;
+    int FractalNodes;
+    int FractalNodes0;
+    int FractalNodes1;
+    int FractalNodes2;
+    int WallNodes;
+    const int N63;
+    int ROOTNODE;
+    int FFTRank;
+    int FFTNodes;
+    int HypreRank;
+    int HypreNodes;
+    int mynumber;
+    int MPI_SWITCH;
+    int MPI_MAX_COMMS;
+    long int number_particles_total;
+    std::deque <Particle*> parts_tmp;
+    std::deque <Particle*> parts_tmpp;
+    Particle* Parts_in;
+    std::vector < std::vector <int> > Slices;
+    std::vector < std::vector <int> > BoxS;
+    std::vector < std::vector <int> > BoxSL;
+    std::vector < std::vector <bool> > counts_on_nodes;
+    std::vector <bool> count_on_node;
+    std::vector<std::vector <int>> node_lists;
+    std::vector <int> freenodes;
+    int glength;
+    pint start_x;
+    pint length_x;
+    pint total_memory;
+    fftw_plan plan_rc;
+    fftw_plan plan_cr;
+    double* potR;
+    double* potRS;
+    fftw_complex* potC; 
+    std::vector <int> WhichSlice;
+    std::vector <double> green;
+    MPI_Comm FractalWorld;
+    MPI_Comm FFTWorld;
+    MPI_Comm HypreWorld;
+    MPI_Group FractalGroup;
+    MPI_Group FFTGroup;
+    MPI_Group HypreGroup;
+    bool IAmPeriodic;
+    bool IAmAnFFTNode;
+    bool IAmAHypreNode;
+    std::vector <int>Franks;
+    std::vector <bool>ItIsAnFFTNode;
+    std::vector <int>Hranks;
+    std::vector <int>IHranks;
+    std::vector <int>Rranks;
+    std::vector <int>IRranks;
+    std::vector <MPI_Comm> MComms;
+    std::vector <MPI_Comm> HComms;
+    std::vector <MPI_Group> HG;
+    bool possibleDANGER;
+    int DANGERlevel;
+    int fftwTAG;
+    bool time_trial;
+    bool standalone;
+    File* p_file;
+    double WallTime;
+    double TreeTime;
+    static bool IAMROOT;
     void MPIStartup();
     void MPIStartup(const bool& PR,int& FR0,int& FR1,int& FR2);
     void MPIFinal() const;
@@ -313,6 +315,21 @@ namespace FractalSpace
     void HypreGroupFree();
     void HypreGroups3Free();
     void createFractalWorld(MPI_Comm& World,std::vector <int>& dims);
+    static Mess* NewMess(const bool& MR,const int& GR,const bool& PR,const int& NP,
+			 int& FR0,int& FR1,int& FR2,const int& FN,MPI_Comm& FW)
+    {
+      if(!p_mess_instance)
+	p_mess_instance=new Mess(MR,GR,PR,NP,FR0,FR1,FR2,FN,FW);
+      return p_mess_instance;
+    }
+    static void DeleteMess()
+    {
+      if(p_mess_instance)
+	{
+	  delete p_mess_instance;
+	  p_mess_instance=NULL;
+	}
+    }
   };
 }
 #endif

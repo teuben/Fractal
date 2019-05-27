@@ -646,7 +646,6 @@ fix_memory.o \
 force_at_particle.o \
 force_at_particle_sharp.o \
 force_at_point.o \
-force_at_point_initial.o \
 force_shear_at_particle.o \
 force_shear_at_point.o \
 force_sum_particle.o \
@@ -659,7 +658,6 @@ groups_level.o \
 high_groups.o \
 high_pairs.o \
 high_points.o \
-left_right.o \
 list_buffer.o \
 make_me_a_galaxy.o \
 match_edges.o \
@@ -673,14 +671,11 @@ potential_start.o \
 power_spectrum.o \
 remove_pseudo_particles.o \
 shrink_cube.o \
-small_exceptions.o \
 sort3_list.o \
 split_particle.o \
 start_writing.o \
 sum_pot_forces.o \
-super_groups.o \
 take_a_leap_isol.o \
-test_gal.o \
 test_group.o \
 test_points.o \
 test_tree.o \

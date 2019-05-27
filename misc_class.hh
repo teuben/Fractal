@@ -8,7 +8,14 @@ namespace FractalSpace
 {
   class Misc
   {
+  private:
     bool debug;
+    Misc():
+      debug(false)
+    {}
+    ~Misc()
+    {}
+    static Misc* p_misc_instance;
   public:
     Group* p_group_0;
     int zoom;
@@ -16,16 +23,22 @@ namespace FractalSpace
     static int dim0;
     static int dim1;
     static int dim2;
-    Misc()
-    {
-      assert(this);
-      debug=false;
-    }
-    ~Misc()
-    {
-    }
     bool get_debug() const;
     void set_debug(bool& d);
+    static Misc* NewMisc()
+    {
+      if(!p_misc_instance)
+	p_misc_instance=new Misc;
+      return p_misc_instance;
+    }
+    static void DeleteMisc()
+    {
+      if(p_misc_instance)
+	{
+	  delete p_misc_instance;
+	  p_misc_instance=NULL;
+	}
+    }
     static int coordinate(std::vector <int>& pos,std::vector <int>& Box,int spacing)
     {
       int nx=pos[0]-Box[0];
@@ -35,7 +48,7 @@ namespace FractalSpace
       int nyt=(Box[3]-Box[2]+1)/spacing;
       return (nx+nxt*(ny+nz*nyt))/spacing;
     }
-     template <class T> void plus(const std::vector <T>& vin,T addit,std::vector <T>& vout)
+    template <class T> static void plus(const std::vector <T>& vin,T addit,std::vector <T>& vout)
     {
       vout=vin;
       plus(vout,addit);
@@ -381,6 +394,8 @@ namespace FractalSpace
 	return A > B;
       }
     };
+    Misc(const Misc&);
+    Misc& operator=(const Misc&);
   };
 }
 #endif

@@ -3,6 +3,7 @@
 #include "headers.hh"
 namespace FractalSpace
 {
+  Mess* Mess::p_mess_instance=NULL;
   bool Mess::IAMROOT;
   void Mess::MPIStartup()
   {

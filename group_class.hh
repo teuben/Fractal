@@ -126,6 +126,8 @@ namespace FractalSpace
     void set_miny_maxy();
     void group_dumpp();
     void group_dumpp(Fractal_Memory& mem,const int tag);
+    Group(const Group&);
+    Group& operator=(const Group&);
   };
 }
 #endif

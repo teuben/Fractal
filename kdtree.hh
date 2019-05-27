@@ -43,6 +43,8 @@ namespace FractalSpace
     void Consolidate();
     void DisplayTree(int& TOT,int& NB);
     void Traverse();
+    KdTree(const KdTree&);
+    KdTree& operator=(const KdTree&);
   };
 }
 #endif

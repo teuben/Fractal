@@ -9,6 +9,7 @@ namespace FractalSpace
 {
   class Fractal 
   {
+  private:
     int number_particles;
     int number_particles_world;
     int grid_length;
@@ -68,29 +69,9 @@ namespace FractalSpace
     int steps;
     double omega_start;
     double base_mass;
-  public:
-    Mess* p_mess;
-    File* p_file;
-    std::deque <Particle*> particle_list;
-    std::deque <Particle*> particle_list_world;
-    std::deque <Particle*> pseudo_particle_list;
-    Particle* part_list_tmp;
-    double omega_fraction;
-    std::vector <double> rad;
-    std::vector <double> grow;
-    static bool first_time_solver;
-    static std::string power_spec;
-    static std::string integrator;
-    static std::string energy_method;
-    static std::string sim_parameters;
-    static std::string force_fixed;
-    static std::string particles;
-    static std::string pot_solver;
-    static std::string vel;
     Fractal()
-    {
-    }
-    template <class M> Fractal(M& mem):
+    {}
+    Fractal(Fractal_Memory& mem):
       density_0(0.0),
       debug(false),
       highest_level_used(0),
@@ -212,8 +193,27 @@ namespace FractalSpace
       grow.assign(101,0.0);
     }
     ~Fractal()
-    {    
-    }
+    {}
+    static Fractal* p_fractal_instance;
+  public:
+    Mess* p_mess;
+    File* p_file;
+    std::deque <Particle*> particle_list;
+    std::deque <Particle*> particle_list_world;
+    std::deque <Particle*> pseudo_particle_list;
+    Particle* part_list_tmp;
+    double omega_fraction;
+    std::vector <double> rad;
+    std::vector <double> grow;
+    static bool first_time_solver;
+    static std::string power_spec;
+    static std::string integrator;
+    static std::string energy_method;
+    static std::string sim_parameters;
+    static std::string force_fixed;
+    static std::string particles;
+    static std::string pot_solver;
+    static std::string vel;
     void redo(Fractal_Memory* PFM);
     int get_FractalRank() const;
     int get_FractalNodes() const;
@@ -263,7 +263,7 @@ namespace FractalSpace
     int get_random_offset() const;
     void set_maxits(const int& m);
     int get_maxits() const;
-    template <class M> void set_masks(M& mem);
+    void set_masks(Fractal_Memory& mem);
     void set_pos_mask(const int& i,const double& x, const double& y, const double& z, const double& r1, const double& r2,const double& r3);
     double get_level_mask(const int& i) const;
     void set_level_mask(const int& i, const int& k);
@@ -299,7 +299,7 @@ namespace FractalSpace
     {
       return (double)(std::max(rand(),1))/rand_max;
     }
-    template <class M> static bool equal(std::vector <M>& a,std::vector <M>& b)
+    static bool equal(std::vector <int>& a,std::vector <int>& b)
     {
       unsigned int sa=a.size();
       if(sa != b.size()); 
@@ -312,6 +312,22 @@ namespace FractalSpace
 	}
       return true;
     }
+    static Fractal* NewFractal(Fractal_Memory& mem)
+    {
+      if(!p_fractal_instance)
+	p_fractal_instance=new Fractal(mem);
+      return p_fractal_instance;
+    }
+    static void DeleteFractal()
+    {
+      if(p_fractal_instance)
+	{
+	  delete p_fractal_instance;
+	  p_fractal_instance=NULL;
+	}
+    }
+    Fractal(const Fractal&);
+    Fractal& operator=(const Fractal&);
   };
 }
 #endif

@@ -68,7 +68,6 @@ namespace FractalSpace
     }
     ~Particle()
     {
-      assert(this);
       number_particles--;
     }
     void set_world(const int& node_w,const int& num_w);
@@ -114,6 +113,8 @@ namespace FractalSpace
     bool get_real_particle() const;
     void dump(std::ofstream& FILE) const;
     template <typename T> void dump(std::ofstream& FILE,std::vector <T>& pott,std::vector <T>& f_x,std::vector <T>& f_y,std::vector <T>& f_z) const;
+    Particle(const Particle&);
+    Particle& operator=(const Particle&);
   };
 }
 #endif

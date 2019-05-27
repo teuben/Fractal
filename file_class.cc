@@ -3,6 +3,7 @@
 #include "headers.hh"
 namespace FractalSpace
 {
+  File* File::p_file_instance=NULL;
   void File::generate_file(ofstream& File,const string& sfile)
   {
     char cfile[100];

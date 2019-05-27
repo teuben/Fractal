@@ -106,14 +106,12 @@ namespace FractalSpace
   }
   Fractal_Memory* fractal_memory_create()
   {
-    Fractal_Memory* PFM = new Fractal_Memory;
-    return PFM;
+    return Fractal_Memory::NewFractalMemory();
   }
   void fractal_memory_delete(Fractal_Memory* PFM)
   {
-    if(PFM == 0)
-      return;
-    delete PFM;
+    Fractal_Memory::DeleteFractalMemory();
+    PFM=NULL;
   }
   void fractal_memory_setup(Fractal_Memory* PFM)
   {
@@ -142,15 +140,15 @@ namespace FractalSpace
     // Construct a Mess object. 
     // All MPI and FFTW stuff is done in Mess member functions. 
     // This will be used throughout the simulation. 
-    Mess* p_mess=new Mess(true,
-			  PFM->grid_length,
-			  PFM->periodic,
-			  PFM->number_particles,
-			  PFM->FractalNodes0,
-			  PFM->FractalNodes1,
-			  PFM->FractalNodes2,
-			  PFM->FFTNodes,
-			  PFM->FractalWorld);
+    Mess* p_mess=Mess::NewMess(true,
+			       PFM->grid_length,
+			       PFM->periodic,
+			       PFM->number_particles,
+			       PFM->FractalNodes0,
+			       PFM->FractalNodes1,
+			       PFM->FractalNodes2,
+			       PFM->FFTNodes,
+			       PFM->FractalWorld);
     PFM->p_mess=p_mess;
     PFM->FFTNodes=PFM->p_mess->FFTNodes;
     p_mess->time_trial=PFM->time_trial;
@@ -163,9 +161,9 @@ namespace FractalSpace
     
     File* p_file=0;
     if(PFM->BaseDirectory == "")
-      p_file=new File();
+      p_file=File::NewFile();
     else
-      p_file=new File(PFM->BaseDirectory,p_mess->FractalNodes,p_mess->FractalRank,PFM->RUN);
+      p_file=File::NewFile(PFM->BaseDirectory,p_mess->FractalNodes,p_mess->FractalRank,PFM->RUN);
     PFM->p_file=p_file;
     PFM->p_mess->p_file=p_file;
     
@@ -180,17 +178,16 @@ namespace FractalSpace
   {
     delete PFM->p_mess->Parts_in;
     PFM->p_mess->Parts_in=NULL;
-    delete PFM->p_fractal;
-    PFM->p_fractal=0;
-    delete PFM->p_mess;
+    Fractal::DeleteFractal();
+    Mess::DeleteMess();
     PFM->p_mess=0;
-    delete PFM->p_file;
+    File::DeleteFile();
     PFM->p_file=0;
   }
   void fractal_create(Fractal_Memory* PFM)
   {
     int NP=PFM->number_particles;
-    Fractal* PF=new Fractal(*PFM);
+    Fractal* PF=Fractal::NewFractal(*PFM);
     PFM->p_fractal=PF;
     if(PFM->periodic)
       return;
@@ -338,7 +335,7 @@ namespace FractalSpace
   {
     delete [] PFM->p_mess->Parts_in;
     PFM->p_mess->Parts_in=0;
-    delete PFM->p_fractal;
+    Fractal::DeleteFractal();
     PFM->p_fractal=0;
   }
   void Fractal_Memory::setBalance(int B)

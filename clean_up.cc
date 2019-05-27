@@ -3,19 +3,13 @@
 #include "headers.hh"
 namespace FractalSpace
 {
-  void clean_up(Fractal_Memory& mem,Misc& misc)
+  void clean_up(Fractal_Memory& mem)
   {
     ofstream& FileFractal=mem.p_fractal->p_file->DUMPS;
     //--------------------------------------------------------------------------------------------------------------------------------
     // Delete all points, groups, chains and misc.
     //--------------------------------------------------------------------------------------------------------------------------------
     int counting=0;
-//     for(int particle=0;particle < fractal_ghost.get_number_particles();++particle)
-//       {
-// 	delete fractal_ghost.particle_list[particle];
-// 	counting++;
-//       }
-    // delete &fractal_ghost;
     counting++;
     if(!mem.amnesia)
       return;
@@ -38,7 +32,7 @@ namespace FractalSpace
 	    p_group=0;
 	  }
       }
-    delete  &misc;
+    Misc::DeleteMisc(); // Soliton
     mem.p_misc=0;
     counting++;
     mem.all_groups.clear();

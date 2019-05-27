@@ -4,6 +4,7 @@
 //
 namespace FractalSpace
 {
+  Fractal* Fractal::p_fractal_instance=NULL;
   void Fractal::redo(Fractal_Memory* PFM)
   {
     Box=PFM->Boxes[FractalRank];
@@ -324,7 +325,7 @@ namespace FractalSpace
   {
     return maxits;
   }
-  template <class M> void Fractal::set_masks(M& mem)
+   void Fractal::set_masks(Fractal_Memory& mem)
   {
     masks=mem.masks;
     masks_level=mem.masks_level;

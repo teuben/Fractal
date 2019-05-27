@@ -9,21 +9,8 @@ namespace FractalSpace
 {
   class File
   {
-  public:
-    std::string BaseDirectory;
-    std::string Directory;
-    std::string RUN;
-    std::ofstream DUMPS;
-    std::ofstream FileFractal;
-    std::ofstream FileEnergy;
-    FILE* PFHypre;
-    FILE* PFFractalMemory;
-    FILE* PFDau;
-    FILE* PFTimeLev;
-    FILE* PFTime;
-    FILE* PFPos;
-    FILE* PFBox;
-    FILE* PFSurface;
+  private:
+    static File* p_file_instance;
     File()
     {
       DUMPS.open("/dev/null");
@@ -144,11 +131,54 @@ namespace FractalSpace
       fclose(PFBox);
       fclose(PFSurface);
     }
+  public:
+    std::string BaseDirectory;
+    std::string Directory;
+    std::string RUN;
+    std::ofstream DUMPS;
+    std::ofstream FileFractal;
+    std::ofstream FileEnergy;
+    FILE* PFHypre;
+    FILE* PFFractalMemory;
+    FILE* PFDau;
+    FILE* PFTimeLev;
+    FILE* PFTime;
+    FILE* PFPos;
+    FILE* PFBox;
+    FILE* PFSurface;
     void generate_file(std::ofstream& File,const std::string& sfile);
     FILE* generate_FILE(const std::string& sfile,int BSIZE);
     void generate_file_in(std::ifstream& File,const std::string& sfile);
     void note(const bool& doit,const std::string& stringy);
     void FlushAll();
+    static File* NewFile()
+    {
+      if(!p_file_instance)
+	p_file_instance=new File;
+      return p_file_instance;
+    }
+    static File* NewFile(const std::string& basedirectory,const int& Rank,const std::string& Run)
+    {
+      if(!p_file_instance)
+	p_file_instance=new File(basedirectory,Rank,Run);
+      return p_file_instance;
+    }
+    static File* NewFile(std::string& basedirectory,const int& FractalNodes,const int& Rank,const std::string& Run)
+    {
+      if(!p_file_instance)
+	p_file_instance=new File(basedirectory,FractalNodes,Rank,Run);
+      return p_file_instance;
+    }
+    static void DeleteFile()
+    {
+      if(p_file_instance)
+	{
+	  delete p_file_instance;
+	  p_file_instance=NULL;
+	}
+    }
+    File(const File&);
+    File& operator=(const File&);
   };
 }
 #endif
