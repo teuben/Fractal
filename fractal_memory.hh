@@ -10,6 +10,7 @@ namespace FractalSpace
   class Fractal_Memory
   {
   private:
+    static Fractal_Memory* p_fractal_memory_instance;
     Fractal_Memory():
       //
       // default values
@@ -278,7 +279,6 @@ namespace FractalSpace
     Fractal* p_fractal;
     Mess* p_mess;
     File* p_file;
-    static Fractal_Memory* p_fractal_memory_instance;
     static MPI_Comm FRACTAL_UNIVERSE;
     //
     void set_G(double Cavendish);

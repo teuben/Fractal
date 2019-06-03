@@ -142,12 +142,6 @@
 #include "headers.hh"
 namespace FractalSpace
 {
-  int Group::number_groups=0;
-  int Point::number_points=0;
-  int Particle::number_particles=0;
-  bool Point::calc_candidates=true;
-  Point* Point::nothing=0;
-  bool Fractal::first_time_solver=true;
   void fractal_force(Fractal& fractal,Fractal_Memory& fractal_memory)
   {
     Full_Stop(fractal_memory,-1);

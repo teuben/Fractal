@@ -34,7 +34,7 @@ namespace FractalSpace
     static Point* nothing;
     static int number_points;
     static bool calc_candidates;
-    static int order[8][7];
+    static std::vector<vector<int>> order;//[8][7];
     static std::vector <int> phl;
     static std::vector <int> dupes;
     static std::vector <int> corner_a;

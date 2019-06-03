@@ -7,7 +7,7 @@ namespace FractalSpace
   void initial_forces_sharp(Fractal_Memory& mem,Fractal& frac)
   {
     ofstream& FileFractal=mem.p_fractal->p_file->DUMPS;
-//     int FractalRank=mem.p_mess->FractalRank;
+    // int FractalRank=mem.p_mess->FractalRank;
     FileFractal << "enter initial_forces " << "\n";
     int seed=mem.random_gen+mem.p_mess->FractalRank;
     srand(seed);
@@ -161,14 +161,14 @@ namespace FractalSpace
 	mem.p_mess->free_potR();
 	Full_Stop(mem,39);
 	if(!lev==0)
-	  for(vector <Group*>::const_iterator group_itr=mem.all_groups[lev].begin();
-	      group_itr!=mem.all_groups[lev].end();group_itr++)
-	    potential_start(**group_itr);
+	  for(auto &pg: mem.all_groups[lev])
+	    potential_start(*pg);
 
 	slices_to_potf(mem,frac,lev);
-	for(vector <Group*>::const_iterator group_itr=mem.all_groups[lev].begin();
-	    group_itr!=mem.all_groups[lev].end();group_itr++)
-	  force_at_point(**group_itr,frac);
+
+	for(auto &pg:mem.all_groups[lev])
+	  force_at_point(*pg,frac);
+
 	FileFractal << " Finished LEVEL " << lev << "\n";
       }
     if(highest_level_fft < highest_level_used)
@@ -176,12 +176,10 @@ namespace FractalSpace
 	for(int lev=highest_level_fft+1;lev <= highest_level_used;++lev)
 	  {
 	    FileFractal << " Starting A LEVEL " << lev << "\n";
-	    for(vector <Group*>::const_iterator group_itr=mem.all_groups[lev].begin();
-		group_itr!=mem.all_groups[lev].end();group_itr++)
+	    for(auto &pg:mem.all_groups[lev])
 	      {
-		Group& group=**group_itr;
-		potential_start(group);
-		force_at_point(group,frac);
+		potential_start(*pg);
+		force_at_point(*pg,frac);
 	      } 
 	    FileFractal << " Finishing A LEVEL " << lev << "\n";
 	  }
@@ -189,10 +187,9 @@ namespace FractalSpace
     for(int level=0;level <= frac.get_level_max();level++)
       {
 	FileFractal << " Starting B LEVEL " << level << "\n";
-	for(vector <Group*>::const_iterator group_itr=mem.all_groups[level].begin();
-	    group_itr!=mem.all_groups[level].end();group_itr++)
+	for(auto &pg:mem.all_groups[level])
 	  {
-	    Group& group=**group_itr;
+	    Group& group=*pg;
 	    group.scale_pot_forces(dead_parrot);
 	    double varx,vary,varz;
 	    group.get_force_variance(varx,vary,varz);
@@ -203,10 +200,7 @@ namespace FractalSpace
 	  }
 	FileFractal << " Finishing B LEVEL " << level << "\n";
       }
-    FileFractal << "calling fractal " << &frac << "\n";
     sum_pot_forces(frac);
-    //  assert(0);
-    FileFractal << "whatt0 " << "\n";
     for(int lev=0;lev<=highest_level_used;lev++)
       {
 	double sum0=1.0e-10;

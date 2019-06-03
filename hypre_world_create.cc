@@ -40,7 +40,6 @@ namespace FractalSpace
       }
     for(int FR : mem.TouchWhichBoxes)
       {
-	FF << " TWH " << mem.steps << " " << level << " " << FR << " ";
 	bool TT(false);
 	if(counts[FR] > 0 && mem.p_mess->IAmAHypreNode)
 	  {
@@ -49,6 +48,7 @@ namespace FractalSpace
 	      {
 	    	if(overlap_boxes(SB,TBBox,width,mem.periodic))
 		  {
+		    FF << " TWH " << mem.steps << " " << level << " " << FR << " ";
 		    mem.Touchy.push_back(FR);
 		    TT=true;
 		    break;

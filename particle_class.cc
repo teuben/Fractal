@@ -4,6 +4,7 @@
 //
 namespace FractalSpace
 {
+  int Particle::number_particles=0;
   void Particle::set_world(const int& node_w,const int& num_w)
   {
     node_world=node_w;

@@ -4,6 +4,7 @@
 //
 namespace FractalSpace
 {
+  int Group::number_groups=0;
   //
   void Group::set_group_number(const int& gn)
   {
@@ -139,16 +140,11 @@ namespace FractalSpace
   {
     for(auto p : list_points)
       p->subtract_dens_at_point(d);
-    // for(vector <Point*>::const_iterator point_itr=list_points.begin();point_itr != list_points.end();++point_itr)
-      //	if((*point_itr)->get_inside()) 
-      // (*point_itr)->subtract_dens_at_point(d);
   }
   void Group::scale_pot_forces(const double& scaling)
   {
     for(auto p : list_points)
       p->scale_pot_forces(scaling);
-    // for(vector <Point*>::const_iterator point_itr=list_points.begin();point_itr != list_points.end();++point_itr)
-    //   (*point_itr)->scale_pot_forces(scaling);
   }
   void Group::get_force_variance(double& varx,double& vary,double& varz)
   {
@@ -161,11 +157,9 @@ namespace FractalSpace
     double sumz(0.0);
     vector <double> f(3);
     for(auto p : list_points)
-    // for(vector <Point*>::const_iterator point_itr=list_points.begin();point_itr != list_points.end();++point_itr)
       {
 	sum0+=1.0;
 	p->get_force_point(f);
-	// (*point_itr)->get_force_point(f);
 	sumx+=f[0];
 	varx+=f[0]*f[0];
 	sumy+=f[1];
@@ -217,8 +211,6 @@ namespace FractalSpace
 	  *Point::p_FILE << " EDGE" << tag << " " << mem.steps << " " << mem.level << " ";
 	  p->dumppf();
 	}
-    // mem.p_mess->p_file->FlushAll();
-    // exit(0);
   }
   void Group::group_dumpp()
   {

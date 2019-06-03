@@ -3,87 +3,48 @@
 #include "headers.hh"
 namespace FractalSpace
 {
-  vector <bool> Point::left(27);
-  vector <bool> Point::corner(27);
-  vector <bool> Point::edge(27);
-  vector <bool> Point::face(27);
-  vector <bool> Point::center(27);
+  bool Point::calc_candidates=true;
+  vector <bool> Point::left(27,false);
+  vector <bool> Point::corner(27,false);
+  vector <bool> Point::edge(27,false);
+  vector <bool> Point::face(27,false);
+  vector <bool> Point::center(27,false);
   vector < vector <int> > Point::cefc(27);
-  vector <int>Point::phl;
-  vector <int>Point::dupes;
+  vector <int>Point::phl(5832,0);
+  vector <int>Point::dupes(729,0);
   vector <int>Point::corner_a;
   vector <int>Point::corner_b;
   vector <int>Point::sequence;
   vector <int>Point::updown;
-  int Point::order [8][7];
+  vector<vector<int>> Point::order;
   vector <vector <int> >Point::nextt(27);
-  ofstream* Point::p_FILE;
+
   void candidate_points()
   {
-    Point::left.assign(27,false);
     for(int niz=0;niz<2;niz++)
-      {
-	for(int niy=0;niy<2;niy++)
-	  {
-	    for(int nix=0;nix<2;nix++)
-	      Point::left[nix+niy*3+niz*9]=true;
-	  }
-      }
-    Point::cefc.resize(27);
-    Point::cefc[1].push_back(0);
-    Point::cefc[1].push_back(1);
-    Point::cefc[3].push_back(2);
-    Point::cefc[3].push_back(3);
-    Point::cefc[4].push_back(0);
-    Point::cefc[4].push_back(1);
-    Point::cefc[4].push_back(2);
-    Point::cefc[4].push_back(3);
-    Point::cefc[5].push_back(2);
-    Point::cefc[5].push_back(3);
-    Point::cefc[7].push_back(0);
-    Point::cefc[7].push_back(1);
-    Point::cefc[9].push_back(4);
-    Point::cefc[9].push_back(5);
-    Point::cefc[10].push_back(0);
-    Point::cefc[10].push_back(1);
-    Point::cefc[10].push_back(4);
-    Point::cefc[10].push_back(5);
-    Point::cefc[11].push_back(4);
-    Point::cefc[11].push_back(5);
-    Point::cefc[12].push_back(2);
-    Point::cefc[12].push_back(3);
-    Point::cefc[12].push_back(4);
-    Point::cefc[12].push_back(5);
-    Point::cefc[14].push_back(2);
-    Point::cefc[14].push_back(3);
-    Point::cefc[14].push_back(4);
-    Point::cefc[14].push_back(5);
-    Point::cefc[15].push_back(4);
-    Point::cefc[15].push_back(5);
-    Point::cefc[16].push_back(0);
-    Point::cefc[16].push_back(1);
-    Point::cefc[16].push_back(4);
-    Point::cefc[16].push_back(5);
-    Point::cefc[17].push_back(4);
-    Point::cefc[17].push_back(5);
-    Point::cefc[19].push_back(0);
-    Point::cefc[19].push_back(1);
-    Point::cefc[21].push_back(2);
-    Point::cefc[21].push_back(3);
-    Point::cefc[22].push_back(0);
-    Point::cefc[22].push_back(1);
-    Point::cefc[22].push_back(2);
-    Point::cefc[22].push_back(3);
-    Point::cefc[23].push_back(2);
-    Point::cefc[23].push_back(3);
-    Point::cefc[25].push_back(0);
-    Point::cefc[25].push_back(1);
-    //
-    Point::corner.assign(27,false);
-    Point::edge.assign(27,false);
-    Point::face.assign(27,false);
-    Point::center.assign(27,false);
-    //
+      for(int niy=0;niy<2;niy++)
+	for(int nix=0;nix<2;nix++)
+	  Point::left[nix+niy*3+niz*9]=true;
+
+    Point::cefc[1]={0,1};
+    Point::cefc[3]={2,3};
+    Point::cefc[4]={0,1,2,3};
+    Point::cefc[5]={2,3};
+    Point::cefc[7]={0,1};
+    Point::cefc[9]={4,5};
+    Point::cefc[10]={0,1,4,5};
+    Point::cefc[11]={4,5};
+    Point::cefc[12]={2,3,4,5};
+    Point::cefc[14]={2,3,4,5};
+    Point::cefc[15]={4,5};
+    Point::cefc[16]={0,1,4,5};
+    Point::cefc[17]={4,5};
+    Point::cefc[19]={0,1};
+    Point::cefc[21]={2,3};
+    Point::cefc[22]={0,1,2,3};
+    Point::cefc[23]={2,3};
+    Point::cefc[25]={0,1};
+    
     Point::corner[0]=true;
     Point::edge[1]=true;
     Point::corner[2]=true;
@@ -111,152 +72,38 @@ namespace FractalSpace
     Point::corner[24]=true;
     Point::edge[25]=true;
     Point::corner[26]=true;
-    //
-    Point::order[0][0]=0;
-    Point::order[0][1]=2;
-    Point::order[0][2]=1;
-    Point::order[0][3]=4;
-    Point::order[0][4]=0;
-    Point::order[0][5]=3;
-    Point::order[0][6]=1;
-    //
-    Point::order[1][0]=1;
-    Point::order[1][1]=2;
-    Point::order[1][2]=0;
-    Point::order[1][3]=4;
-    Point::order[1][4]=1;
-    Point::order[1][5]=3;
-    Point::order[1][6]=0;
-    //
-    Point::order[2][0]=0;
-    Point::order[2][1]=3;
-    Point::order[2][2]=1;
-    Point::order[2][3]=4;
-    Point::order[2][4]=0;
-    Point::order[2][5]=2;
-    Point::order[2][6]=1;
-    //
-    Point::order[3][0]=1;
-    Point::order[3][1]=3;
-    Point::order[3][2]=0;
-    Point::order[3][3]=4;
-    Point::order[3][4]=1;
-    Point::order[3][5]=2;
-    Point::order[3][6]=0;
-    //
-    Point::order[4][0]=0;
-    Point::order[4][1]=2;
-    Point::order[4][2]=1;
-    Point::order[4][3]=5;
-    Point::order[4][4]=0;
-    Point::order[4][5]=3;
-    Point::order[4][6]=1;
-    //
-    Point::order[5][0]=1;
-    Point::order[5][1]=2;
-    Point::order[5][2]=0;
-    Point::order[5][3]=5;
-    Point::order[5][4]=1;
-    Point::order[5][5]=3;
-    Point::order[5][6]=0;
-    //
-    Point::order[6][0]=0;
-    Point::order[6][1]=3;
-    Point::order[6][2]=1;
-    Point::order[6][3]=5;
-    Point::order[6][4]=0;
-    Point::order[6][5]=2;
-    Point::order[6][6]=1;
-    //
-    Point::order[7][0]=1;
-    Point::order[7][1]=3;
-    Point::order[7][2]=0;
-    Point::order[7][3]=5;
-    Point::order[7][4]=1;
-    Point::order[7][5]=2;
-    Point::order[7][6]=0;
-    //
-    Point::phl.assign(5832,0);
-    Point::dupes.assign(729,0);
-    Point::corner_a.assign(27,0); //(0,0,1,0,0,1,2,2,3,0,0,1,0,0,1,2,2,3,4,4,5,4,4,5,6,6,7);
-    Point::corner_b.assign(27,0); //(7,6,6,5,4,4,5,4,4,3,2,2,1,0,0,1,0,0,3,2,2,1,0,0,1,0,0);
-    //
-    Point::corner_a[0]=0;
-    Point::corner_a[1]=0;
-    Point::corner_a[2]=1;
-    Point::corner_a[3]=0;
-    Point::corner_a[4]=0;
-    Point::corner_a[5]=1;
-    Point::corner_a[6]=2;
-    Point::corner_a[7]=2;
-    Point::corner_a[8]=3;
-    Point::corner_a[9]=0;
-    Point::corner_a[10]=0;
-    Point::corner_a[11]=1;
-    Point::corner_a[12]=0;
-    Point::corner_a[13]=0;
-    Point::corner_a[14]=1;
-    Point::corner_a[15]=2;
-    Point::corner_a[16]=2;
-    Point::corner_a[17]=3;
-    Point::corner_a[18]=4;
-    Point::corner_a[19]=4;
-    Point::corner_a[20]=5;
-    Point::corner_a[21]=4;
-    Point::corner_a[22]=4;
-    Point::corner_a[23]=5;
-    Point::corner_a[24]=6;
-    Point::corner_a[25]=6;
-    Point::corner_a[26]=7;
-    //
-    Point::corner_b[0]=7;
-    Point::corner_b[1]=6;
-    Point::corner_b[2]=6;
-    Point::corner_b[3]=5;
-    Point::corner_b[4]=4;
-    Point::corner_b[5]=4;
-    Point::corner_b[6]=5;
-    Point::corner_b[7]=4;
-    Point::corner_b[8]=4;
-    Point::corner_b[9]=3;
-    Point::corner_b[10]=2;
-    Point::corner_b[11]=2;
-    Point::corner_b[12]=1;
-    Point::corner_b[13]=0;
-    Point::corner_b[14]=0;
-    Point::corner_b[15]=1;
-    Point::corner_b[16]=0;
-    Point::corner_b[17]=0;
-    Point::corner_b[18]=3;
-    Point::corner_b[19]=2;
-    Point::corner_b[20]=2;
-    Point::corner_b[21]=1;
-    Point::corner_b[22]=0;
-    Point::corner_b[23]=0;
-    Point::corner_b[24]=1;
-    Point::corner_b[25]=0;
-    Point::corner_b[26]=0;
-      //
-    Point::sequence.resize(8);
-    Point::sequence[0]=0;      
-    Point::sequence[1]=1;      
-    Point::sequence[2]=3;      
-    Point::sequence[3]=2;      
-    Point::sequence[4]=6;      
-    Point::sequence[5]=7;      
-    Point::sequence[6]=5;      
-    Point::sequence[7]=4;      
-      //
-    Point::updown.resize(8);
-    Point::updown[0]=1;      
-    Point::updown[1]=3;      
-    Point::updown[2]=0;      
-    Point::updown[3]=5;      
-    Point::updown[4]=1;      
-    Point::updown[5]=2;      
-    Point::updown[6]=0;      
-    Point::updown[7]=4;      
-      //
+    
+    Point::order.push_back(vector<int>());
+    Point::order.back()={0,2,1,4,0,3,1};
+    
+    Point::order.push_back(vector<int>());
+    Point::order.back()={1,2,0,4,1,3,0};
+    
+    Point::order.push_back(vector<int>());
+    Point::order.back()={0,3,1,4,0,2,1};
+    
+    Point::order.push_back(vector<int>());
+    Point::order.back()={1,3,0,4,1,2,0};
+    
+    Point::order.push_back(vector<int>());
+    Point::order.back()={0,2,1,5,0,3,1};
+    
+    Point::order.push_back(vector<int>());
+    Point::order.back()={1,2,0,5,1,3,0};
+    
+    Point::order.push_back(vector<int>());
+    Point::order.back()={0,3,1,5,0,2,1};
+    
+    Point::order.push_back(vector<int>());
+    Point::order.back()={1,3,0,5,1,2,0};
+    
+    Point::corner_a={0,0,1,0,0,1,2,2,3,0,0,1,0,0,1,2,2,3,4,4,5,4,4,5,6,6,7};
+    
+    Point::corner_b={7,6,6,5,4,4,5,4,4,3,2,2,1,0,0,1,0,0,3,2,2,1,0,0,1,0,0};
+    
+    Point::sequence={0,1,3,2,6,7,5,4};
+    Point::updown={1,3,0,5,1,2,0,4};
+    
     for(int pl=0;pl < 27;pl++)
       {
 	int plz=pl/9;
@@ -298,8 +145,8 @@ namespace FractalSpace
 	      }
 	  }
       }
-    int positions[27][27];
-    bool decisions[27][27];
+    array<array<int,27>,27> positions;
+    array<array<bool,27>,27> decisions;
     //--------------------------------------------------------------------------------------------------------------------------------
     // Find which of the 27 points in a 3x3 cube can be affected by the 3x3 cube of high points.
     // need only do this once.

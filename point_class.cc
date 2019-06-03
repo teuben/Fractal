@@ -4,6 +4,9 @@
 //
 namespace FractalSpace
 {
+  int Point::number_points=0;
+  Point* Point::nothing=0;
+  ofstream* Point::p_FILE;
   void Point::set_found_it(bool fi)
   {
     found_it=fi;
@@ -706,14 +709,14 @@ namespace FractalSpace
     Point* p=this;
     for(int ni :{1,3,0,5,1,2,0})
       {
-	Point* pp=p;
+	// Point* pp=p;
 	p=p->get_point_ud(ni);
 	if(p)
 	  continue;
-	*p_FILE << " CUBE TEST A ";
-	this->dump();
-	*p_FILE << " CUBE TEST B ";
-	pp->dump();
+	// *p_FILE << " CUBE TEST A ";
+	// this->dump();
+	// *p_FILE << " CUBE TEST B ";
+	// pp->dump();
 	// p_FILE->flush();
 	return false;
       }
