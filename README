@@ -1,0 +1,72 @@
+Fractal (or Spheral++ FractalGravity) is gravity solver.
+More documentation in another place and another time.
+
+
+# NEMO Notes
+
+This package needs an MPI compiler (what about OpenMP?), e.g. mpic++
+
+
+This package also depends on two open source libraries:
+
+     FFTW : Fastest FFT in the West
+     HYPRE: Scalable Linear Solvers and Multigrid Methods
+
+On Ubuntu you can install them using
+   
+     sudo apt install libfftw3-mpi-dev libhypre-dev
+
+Their source code is available on:
+
+     https://github.com/FFTW/fftw3
+     https://github.com/hypre-space/hypre
+
+Within NEMO you can install it in $NEMO/opt using
+
+     mknemo hypre
+
+(the fftw need the MPI version, which NEMO doesn't support yet,
+but the ubuntu package worked fine)
+
+After this the (system=nemo hacked) makefile can be used as follows:
+
+     make fractal_cosmo fractal_cosmo
+
+
+The makefile compiles a few programs, 2 of which link properly
+    fractal_cosmo                     ->  execs/fractal_nina_cosmo.exe
+    fractal_galaxy                    ->  execs/fractal_nina_galaxy.exe
+    fractal_galaxy_spheral                (fails to compile)
+    fractal_nina (undocumented)
+
+
+Notes on the command line interface:
+
+
+For fractal_galaxy:
+
+Argument:                           Default:
+-----------------------------------------------------------------
+BaseDirectory=argv[1];              /p/lscratchh/jensv/galaxy/  
+RunIdentifier=argv[2];              NerdsRule
+GRL=atoi(argv[3]);                  256 
+dims[0]=atoi(argv[4]);              0
+dims[1]=atoi(argv[5]);              0
+dims[2]=atoi(argv[6]);              0
+NumberParticles=atoi(argv[7]);      100000
+SHRINK=atof(argv[8]);               0.0
+PADDING=atoi(argv[9]);              1 (but it's used as a double)
+node_load=atoi(argv[10]);           20000
+number_steps_total=atoi(argv[12]);  1000
+
+For fractal_cosmo:
+
+(close , but a little different)
+
+A simple run:
+
+execs/fractal_nina_galaxy.exe tmp hello 256 0 0 0 10000
+
+crashed
+
+fractal_nina_galaxy.exe: file_class.hh:105: FractalSpace::File::File(std::string&, const int&, const int&, const string&): Assertion `ni < 25' failed.
