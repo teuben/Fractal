@@ -17,6 +17,10 @@ hvers = 11
 compiler = mpiicpc
 PREFIXF = /g/g90/jensv/cplus/fftw-3.3.4/install-intel
 PREFIXH = /g/g90/jensv/cplus/HYPREINTEL110/hypre-2.11.0/src/hypre
+
+#
+system = nemo
+
 #
 ifeq ($(debug),d)
 	fopt1 = -g -pedantic -O0
@@ -54,10 +58,17 @@ ifeq ($(system),quartz)
 	PREFIXF = /g/g90/jensv/cplus/fftw-3.3.7/intel-quartz
 	PREFIXH = /g/g90/jensv/cplus/hypre-2.11.2/quartz/src/hypre
 endif
+ifeq ($(system),nemo)
+	MP = -fopenmp
+	compiler =  mpic++
+	PREFIXF = $(NEMO)/opt
+	PREFIXH = $(NEMO)/opt
+endif
 Loptfftw = -L$(PREFIXF)/lib
 head_dir_fftw = $(PREFIXF)/include
 Lopthypre = -L$(PREFIXH)/lib
 head_dir_hypre = $(PREFIXH)/include
+
 #
 compile = $(compiler) -I $(head_dir_fftw) -I $(head_dir_hypre) $(MP) $(STD) $(verbose) $(fopt1) $(Wopt1) $(gprof)
 #
@@ -80,6 +91,19 @@ particle_cosmo_file = make_particles_cosmo
 particle_cosmo_mpi_file = make_particles_cosmo_mpi
 step_file = step_leapfrog
 velocity_file = velocities
+#
+
+BINS = fractal_cosmo  fractal_galaxy fractal_galaxy_spheral
+
+help:
+	@echo Supported code:  fractal_cosmo  fractal_galaxy fractal_galaxy_spheral
+	@echo and unsupported:  fractal_nina
+
+all:	$(BINS)
+
+clean:
+	rm -f *.o
+
 #
 fractal_class.o :	fractal_class.cc $(classes)
 	$(compile) -c fractal_class.cc
